@@ -1,25 +1,28 @@
-import logo from './logo.svg';
 import './App.css';
+import {AppBar, Box, Button, Container, css, Toolbar, Typography} from "@mui/material";
+
+function Header() {
+    return <AppBar component='nav' position={"static"}>
+        <Toolbar>
+            <Typography variant={'h4'}>MENTI - UNQ</Typography>
+            <Button sx={{color:'white'}}>
+                Ingresar
+            </Button>
+        </Toolbar>
+    </AppBar>;
+}
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <>
+            <Header/>
+            <Container>
+                <Typography variant='h1'>
+                    Menti - UNQ
+                </Typography>
+            </Container>
+        </>
+    );
 }
 
 export default App;
