@@ -1,0 +1,19 @@
+.slide-box {
+    border-radius: 8px;
+    border: 1px solid lightgray;
+    padding: 8px;
+    margin: 8px;
+    position: relative;
+}
+
+.slide-box svg{
+    cursor: pointer;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    display: none;
+}
+
+.slide-box:hover svg{
+    display: block;
+}
