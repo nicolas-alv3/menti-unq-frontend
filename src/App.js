@@ -1,6 +1,7 @@
 import './App.css';
-import {AppBar, Box, Button, Container, css, Toolbar, Typography} from "@mui/material";
+import {AppBar, Button, Container, Toolbar, Typography} from "@mui/material";
 import {useAuth0} from "@auth0/auth0-react";
+import Home from "./components/Home";
 
 function LoginButton() {
     const {loginWithRedirect} = useAuth0();
@@ -33,9 +34,7 @@ function App() {
         <>
             <Header/>
             <Container>
-                <Typography variant='h1'>
-                    Menti - UNQ
-                </Typography>
+                <Home />
             </Container>
         </>
     );
