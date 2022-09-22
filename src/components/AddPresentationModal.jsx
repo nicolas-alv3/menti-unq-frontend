@@ -34,7 +34,7 @@ export default function AddPresentationModal( {isOpen, setIsOpen} ) {
     }
 
     return <>
-        <QModal title={"Agregar presentacion"} open={isOpen} setOpen={setIsOpen} onConfirm={handlePresentationCofirm}>
+        <QModal title="Crear presentación" open={isOpen} setOpen={setIsOpen} onConfirm={handlePresentationCofirm}>
             <Box component="form" sx={{
                 margin: "16px 0",
                 width: '25ch',
