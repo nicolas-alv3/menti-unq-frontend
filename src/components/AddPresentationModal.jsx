@@ -5,24 +5,29 @@ import AddSlideModal from "./AddSlideModal";
 import '../styles/AddPresentationModal.css';
 import EditIcon from '@mui/icons-material/Edit';
 import PresentationService from "../service/PresentationService";
+import {useContext, useEffect} from "react";
+import {useAuth0} from "@auth0/auth0-react";
+import configData from "../config.json"
+import {AuthContext} from "../App";
 
 function SlideBox({slide}) {
     return <Box className={"slide-box"}>
-        <EditIcon />
+        <EditIcon/>
         <Typography variant={"h6"}>{slide.question}</Typography>
         Opciones: {slide.options.toString()}
     </Box>;
 }
 
-export default function AddPresentationModal( {isOpen, setIsOpen} ) {
+export default function AddPresentationModal({isOpen, setIsOpen}) {
     const [name, setName] = React.useState("");
     const [open, setOpen] = React.useState(false);
     const [slides, setSlides] = React.useState([]);
+    const context = React.useContext(AuthContext)
 
     const handleAddSlide = slide => setSlides(prevState => prevState.concat([slide]));
 
     const handlePresentationCofirm = () => {
-        PresentationService.create({name, slides})
+        PresentationService.create({name, slides}, context)
             .then((res) => console.log(res))
             .catch((err) => console.log(err));
         resetForm();
@@ -50,7 +55,7 @@ export default function AddPresentationModal( {isOpen, setIsOpen} ) {
             <Divider/>
             {!slides.length && "No hay diapositivas"}
             {
-                slides.map(s => <SlideBox key={s.question} slide={s} />)
+                slides.map(s => <SlideBox key={s.question} slide={s}/>)
             }
             <Button onClick={() => setOpen(true)}>Agregar diapositiva</Button>
             <AddSlideModal open={open} setOpen={setOpen} onAdd={handleAddSlide}/>
