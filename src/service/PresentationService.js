@@ -5,7 +5,7 @@ class PresentationService {
 
     create(presentation, accessToken) {
         console.log(accessToken)
-        return fetch('http://localhost:8080/presentation/private', {
+        return fetch('http://localhost:8080/api/presentation/', {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
