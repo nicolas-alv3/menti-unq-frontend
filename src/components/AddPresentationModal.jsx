@@ -22,12 +22,12 @@ export default function AddPresentationModal({isOpen, setIsOpen}) {
     const [name, setName] = React.useState("");
     const [open, setOpen] = React.useState(false);
     const [slides, setSlides] = React.useState([]);
-    const context = React.useContext(AuthContext)
+    const {accessToken} = React.useContext(AuthContext)
 
     const handleAddSlide = slide => setSlides(prevState => prevState.concat([slide]));
 
     const handlePresentationCofirm = () => {
-        PresentationService.create({name, slides}, context)
+        PresentationService.create({name, slides}, accessToken)
             .then((res) => console.log(res))
             .catch((err) => console.log(err));
         resetForm();

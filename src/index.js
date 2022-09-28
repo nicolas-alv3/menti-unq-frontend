@@ -5,6 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {Auth0Provider} from "@auth0/auth0-react";
 import configData from "./config.json";
+import {BrowserRouter} from "react-router-dom";
 
 const providerConfig = {
     domain: configData.domain,
@@ -19,7 +20,9 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <React.StrictMode>
         <Auth0Provider {...providerConfig}>
-            <App/>
+            <BrowserRouter>
+                <App/>
+            </BrowserRouter>
         </Auth0Provider>
     </React.StrictMode>
 );
