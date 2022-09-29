@@ -9,6 +9,7 @@ import {Header} from "./Header";
 import PresentationService from "../service/PresentationService";
 import * as PropTypes from "prop-types";
 import {PresentationsList} from "./PresentationsList";
+import {Link} from "react-router-dom";
 
 PresentationsList.propTypes = {presentations: PropTypes.arrayOf(PropTypes.any)};
 export default function Home() {
@@ -19,16 +20,15 @@ export default function Home() {
     useEffect(() => {
         getAccessTokenSilently().then(data => {
             setAccessToken(data)
+            return data
+        }).then((data) => {
+            PresentationService.getPresentations(data).then(presentations => {
+                setPresentations(presentations)
+            })
         }).catch((e) => {
             console.log("error", e)
         })
     }, [getAccessTokenSilently]);
-
-    useEffect(() => {
-        PresentationService.getPresentations().then(presentations => {
-            setPresentations(presentations)
-        })
-    },[setPresentations])
 
     if (error) {
         return <div>Oops... {error.message}</div>;
@@ -43,8 +43,8 @@ export default function Home() {
     }
     return <>
         <Header/>
-        <Container sx={{backgroundColor: "#F0EDE0"}} maxWidth={false}>
-            {presentations.length === 0 &&
+        <Container sx={{position: 'fixed', backgroundColor: "#F0EDE0", minHeight: '100vh'}} maxWidth={false}>
+            {isAuthenticated && presentations.length === 0 &&
                 <Container sx={{display: "flex", alignItems: "center", justifyContent: "center", padding: "7vh"}}>
                     <Container sx={{padding: '3vh 3vh', width: '75vh', height: '75vh'}}>
                         <Typography variant='h4'>
@@ -54,10 +54,13 @@ export default function Home() {
                             ¡Vaya! Aun no tenes ninguna presentacion creada.Comenzá creando tu primera
                             presentacion
                         </Typography>
-                        <Button sx={{backgroundColor: '#970C10', marginTop: '3em'}} variant='contained'
-                                onClick={() => setOpenPresentation(true)}>Crear presentación</Button>
+                        <Link to='/crearPresentacion' style={{textDecoration: 'none'}}>
+                            <Button sx={{backgroundColor: '#970C10', marginTop: '3em'}} variant='contained'>Crear
+                                presentación</Button>
+                        </Link>
                     </Container>
-                    {isAuthenticated && <AddPresentationModal isOpen={openPresentation} setIsOpen={setOpenPresentation}/>}
+                    {isAuthenticated &&
+                        <AddPresentationModal isOpen={openPresentation} setIsOpen={setOpenPresentation}/>}
                 </Container>
             }
             <PresentationsList presentations={presentations}/>
