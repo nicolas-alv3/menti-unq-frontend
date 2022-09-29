@@ -1,20 +1,23 @@
 import './App.css';
-import {Container} from "@mui/material";
-import {useAuth0} from "@auth0/auth0-react";
 import Home from "./components/Home";
-import {Welcome} from "./components/Welcome";
-import {Header} from "./components/Header";
+import * as React from "react";
+import {Route, Routes} from "react-router";
+import {CreatePresentationPage, TabPanel} from "./CreatePresentationPage";
+
+export const AuthContext = React.createContext({
+    accessToken: null, setAccessToken: () => {
+    }
+})
 
 function App() {
-    const {isAuthenticated} = useAuth0();
-    return (
-        <>
-            <Header/>
-            <Container sx={{backgroundColor: "#F0EDE0"}} maxWidth={false}>
-                {isAuthenticated ? <Home/> : <Welcome/>}
-            </Container>
-        </>
-    );
+    const [accessToken, setAccessToken] = React.useState(null);
+
+    return (<AuthContext.Provider value={{accessToken, setAccessToken}}>
+        <Routes>
+            <Route exact path='/' element={<Home/>}/>
+            <Route path='/crearPresentacion' element={<CreatePresentationPage/>}/>
+        </Routes>
+    </AuthContext.Provider>);
 }
 
 export default App;

@@ -4,13 +4,25 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {Auth0Provider} from "@auth0/auth0-react";
+import configData from "./config.json";
+import {BrowserRouter} from "react-router-dom";
+
+const providerConfig = {
+    domain: configData.domain,
+    clientId: configData.clientId,
+    audience: configData.audience,
+    redirectUri: window.location.origin,
+    useRefreshTokens: true,
+    cacheLocation: "localstorage"
+};
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <React.StrictMode>
-        <Auth0Provider domain='lhazuca.auth0.com' clientId='0jYDJNY7gVPvMq4XHYEgbbA3sqePLj3C'
-                       redirectUri={window.location.origin}>
-            <App/>
+        <Auth0Provider {...providerConfig}>
+            <BrowserRouter>
+                <App/>
+            </BrowserRouter>
         </Auth0Provider>
     </React.StrictMode>
 );

@@ -1,0 +1,6 @@
+{
+  "domain": "lhazuca.auth0.com",
+  "clientId": "0jYDJNY7gVPvMq4XHYEgbbA3sqePLj3C",
+  "audience": "https://lhazuca.auth0.com/api/v2/",
+  "scope": "read:current_user"
+}
