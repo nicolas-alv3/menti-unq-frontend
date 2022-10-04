@@ -1,25 +1,37 @@
-class PresentationService {
+import Service from "./Service";
 
-    create(presentation, accessToken) {
-        return fetch('http://localhost:8080/api/presentation/', {
+class PresentationService extends Service {
+
+    create(presentation) {
+        return fetch(`${this.baseUrl}/api/presentation/`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: "Bearer " + accessToken,
+                Authorization: "Bearer " + this.getAccessToken(),
             },
             body: JSON.stringify(presentation)
         }).then(data => data.json());
     }
 
-    getPresentations(accessToken) {
-        let url = new URL('http://localhost:8080/api/presentation/individual');
+    getPresentations() {
+        let url = new URL(`${this.baseUrl}/api/presentation/individual`);
         return fetch(url, {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: "Bearer " + accessToken,
+                Authorization: "Bearer " + this.getAccessToken(),
             },
         }).then(data => data.json());
+    }
+
+    delete(id) {
+        return fetch(`${this.baseUrl}/api/presentation/${id}`, {
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: "Bearer " + this.getAccessToken(),
+            },
+        });
     }
 }
 

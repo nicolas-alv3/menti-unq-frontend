@@ -1,10 +1,8 @@
 import {Button, Container, Typography} from "@mui/material";
 import "../styles/Home.css";
-import AddPresentationModal from "./AddPresentationModal";
 import * as React from "react";
-import {useContext, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {useAuth0} from "@auth0/auth0-react";
-import {AuthContext} from "../App";
 import {Header} from "./Header";
 import PresentationService from "../service/PresentationService";
 import * as PropTypes from "prop-types";
@@ -13,22 +11,15 @@ import {Link} from "react-router-dom";
 
 PresentationsList.propTypes = {presentations: PropTypes.arrayOf(PropTypes.any)};
 export default function Home() {
-    const [openPresentation, setOpenPresentation] = useState(false);
     const [presentations, setPresentations] = useState([]);
-    const {isAuthenticated, getAccessTokenSilently, error, isLoading, loginWithRedirect} = useAuth0();
-    const {accessToken, setAccessToken} = useContext(AuthContext);
+    const {isAuthenticated, error, isLoading, loginWithRedirect} = useAuth0();
     useEffect(() => {
-        getAccessTokenSilently().then(data => {
-            setAccessToken(data)
-            return data
-        }).then((data) => {
-            PresentationService.getPresentations(data).then(presentations => {
+            PresentationService.getPresentations().then(presentations => {
                 setPresentations(presentations)
-            })
-        }).catch((e) => {
+            }).catch((e) => {
             console.log("error", e)
         })
-    }, [getAccessTokenSilently]);
+    }, []);
 
     if (error) {
         return <div>Oops... {error.message}</div>;
@@ -59,8 +50,6 @@ export default function Home() {
                                 presentación</Button>
                         </Link>
                     </Container>
-                    {isAuthenticated &&
-                        <AddPresentationModal isOpen={openPresentation} setIsOpen={setOpenPresentation}/>}
                 </Container>
             }
             {

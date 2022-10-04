@@ -2,22 +2,14 @@ import './App.css';
 import Home from "./components/Home";
 import * as React from "react";
 import {Route, Routes} from "react-router";
-import {CreatePresentationPage, TabPanel} from "./CreatePresentationPage";
-
-export const AuthContext = React.createContext({
-    accessToken: null, setAccessToken: () => {
-    }
-})
+import {CreatePresentationPage} from "./CreatePresentationPage";
 
 function App() {
-    const [accessToken, setAccessToken] = React.useState(null);
 
-    return (<AuthContext.Provider value={{accessToken, setAccessToken}}>
-        <Routes>
+    return (<Routes>
             <Route exact path='/' element={<Home/>}/>
             <Route path='/crearPresentacion' element={<CreatePresentationPage/>}/>
-        </Routes>
-    </AuthContext.Provider>);
+        </Routes>);
 }
 
 export default App;

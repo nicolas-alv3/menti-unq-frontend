@@ -1,5 +1,5 @@
 import {
-    Box, Button,
+    Box, Button, IconButton,
     Paper,
     Table,
     TableBody,
@@ -10,8 +10,35 @@ import {
     Typography
 } from "@mui/material";
 import {Link} from "react-router-dom";
+import DeleteIcon from '@mui/icons-material/Delete';
+import Swal from 'sweetalert2'
+import PresentationService from "../service/PresentationService";
+
 
 export function PresentationsList(props) {
+
+    const handleDelete = (id) => () => {
+        Swal.fire({
+            title: '¿Estas segur@?',
+            text: "Si eliminas esta presentación, no podrás revertirlo",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Eliminar!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                PresentationService.delete(id)
+                    .then(() => {
+                        debugger
+                        Swal.fire(
+                            '¡Listo!',
+                            'La presentación ha sido eliminada',
+                            'success'
+                        )
+                    })
+            }
+        })
+    }
+
     const boxSx = {display: 'flex', justifyContent: 'space-between', padding: '1em 5em'};
     return <>
         <Paper sx={{marginTop: '1em'}}>
@@ -28,7 +55,8 @@ export function PresentationsList(props) {
                             <TableCell>Nombre</TableCell>
                             <TableCell align="right">Slides</TableCell>
                             <TableCell align="right">Respuestas</TableCell>
-                        </TableRow>
+                        <TableCell align="right"></TableCell>
+                    </TableRow>
                     </TableHead>
                     <TableBody>
                         {props.presentations.map((row) => (
@@ -41,6 +69,11 @@ export function PresentationsList(props) {
                                 </TableCell>
                                 <TableCell align="right">{row.slides.length}</TableCell>
                                 <TableCell align="right">ZERO</TableCell>
+                            <TableCell align="right">
+                                <IconButton aria-label="delete">
+                                    <DeleteIcon onClick={ handleDelete(row.id) }/>
+                                </IconButton>
+                            </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
