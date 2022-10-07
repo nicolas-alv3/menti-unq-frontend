@@ -5,7 +5,7 @@ import {Box, Button, Container, Divider, Input, Paper, Tab, Tabs, Typography} fr
 import PropTypes from "prop-types";
 import PresentationService from "./service/PresentationService";
 import {AuthContext} from "./App";
-import {useInRouterContext, useLocation, useNavigate} from "react-router";
+import {useNavigate} from "react-router";
 
 function TabPanel(props) {
     const {children, value, index, show, ...other} = props;
@@ -36,7 +36,6 @@ TabPanel.propTypes = {
 export function CreatePresentationPage(props) {
     const [title, setTitle] = useState('Nueva presentacion');
     const [selectedTab, setSelectedTab] = useState(0);
-    const {accessToken} = useContext(AuthContext);
     const navigate = useNavigate();
 
     return <>
@@ -84,7 +83,7 @@ export function CreatePresentationPage(props) {
                     </TabPanel>
                 </Box>
                 <Button onClick={() => {
-                    PresentationService.create({name: title}, accessToken)
+                    PresentationService.create({name: title})
                         .then((res) => navigate('/'))
                         .catch((err) => console.log(err));
                 }}>Guardar</Button>
