@@ -33,10 +33,64 @@ TabPanel.propTypes = {
 };
 
 
+function SlidesPanel({slides, slideChange}) {
+    const [selectedTab, setSelectedTab] = useState(0);
+    return <>
+        <Tabs value={selectedTab} orientation='vertical' variant='scrollable'
+              sx={{borderRight: 1, borderColor: 'black', width: '10em', padding: '1em 0', height: '90%'}}
+        >
+            {slides.map((_slide, i) =>
+                <Tab id={i.toString()} component={() => <Container onClick={() => setSelectedTab(i)} sx={{
+                    display: 'flex',
+                    border: 'solid 1px',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    height: '5em',
+                    width: '8em'
+                }}>
+                    MCQ
+                </Container>}/>
+            )}
+        </Tabs>
+        {slides.map((slide, index) => {
+            return <TabPanel index={index} show={selectedTab === index}>
+                <Input value={slide.question} onChange={(e) => {
+                    slideChange(index, {...slide, question: e.target.value});
+                }}/>
+            </TabPanel>
+        })}
+    </>;
+}
+
+SlidesPanel.propTypes = {slides: PropTypes.arrayOf(PropTypes.any)};
+
+class MCQSlide {
+
+    constructor() {
+        this.question = "Pregunta de seleccion multiple";
+    }
+}
+
 export function CreatePresentationPage(props) {
     const [title, setTitle] = useState('Nueva presentacion');
-    const [selectedTab, setSelectedTab] = useState(0);
+    const [slides, setSlides] = useState([new MCQSlide()]);
+    const {accessToken} = useContext(AuthContext);
     const navigate = useNavigate();
+
+    const handleSlideChange = (index, newValue) => {
+        const newSlidesList = slides.map((s, currentIndex) => {
+            if (index === currentIndex) {
+                return newValue
+            } else {
+                return s;
+            }
+        })
+        setSlides(newSlidesList);
+    };
+
+    const addNewSlide = () => {
+        setSlides([...slides, new MCQSlide()]);
+    };
 
     return <>
         <Header/>
@@ -46,44 +100,15 @@ export function CreatePresentationPage(props) {
                        onChange={e => setTitle(e.target.value)}/>
                 <Divider/>
                 <Box sx={{marginTop: '1em'}}>
-                    <Button variant='contained'>
-                        Nueva slide
+                    <Button variant='contained' size="small" onClick={addNewSlide}>
+                        Agregar slide
                     </Button>
                 </Box>
                 <Box sx={{height: '70vh', display: 'flex'}}>
-                    <Tabs value={selectedTab} orientation='vertical' variant='scrollable'
-                          sx={{borderRight: 1, borderColor: 'black', width: '10em', padding: '1em 0', height: '90%'}}
-                    >
-                        <Tab component={() => <Container onClick={() => setSelectedTab(0)} sx={{
-                            display: 'flex',
-                            border: 'solid 1px',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            height: '5em',
-                            width: '8em'
-                        }}>
-                            MCQ
-                        </Container>}/>
-                        <Tab component={() => <Container onClick={() => setSelectedTab(1)} sx={{
-                            display: 'flex',
-                            border: 'solid 1px',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            height: '5em',
-                            width: '8em'
-                        }}>
-                            Comment
-                        </Container>}/>
-                    </Tabs>
-                    <TabPanel show={selectedTab === 0} index={0}>
-                        <Typography>Aca van cosas para MCQ</Typography>
-                    </TabPanel>
-                    <TabPanel show={selectedTab === 1} index={1}>
-                        <Typography>Aca van cosas para Comment</Typography>
-                    </TabPanel>
+                    <SlidesPanel slideChange={handleSlideChange} slides={slides}/>
                 </Box>
                 <Button onClick={() => {
-                    PresentationService.create({name: title})
+                    PresentationService.create({name: title, slides})
                         .then((res) => navigate('/'))
                         .catch((err) => console.log(err));
                 }}>Guardar</Button>
