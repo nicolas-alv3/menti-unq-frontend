@@ -23,12 +23,11 @@ export function PresentationsList(props) {
             text: "Si eliminas esta presentación, no podrás revertirlo",
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonText: 'Eliminar!'
+            confirmButtonText: 'Eliminar'
         }).then((result) => {
             if (result.isConfirmed) {
                 PresentationService.delete(id)
                     .then(() => {
-                        debugger
                         Swal.fire(
                             '¡Listo!',
                             'La presentación ha sido eliminada',
