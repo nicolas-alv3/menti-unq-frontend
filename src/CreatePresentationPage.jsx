@@ -1,7 +1,7 @@
 import * as React from "react";
 import {useContext, useState} from "react";
 import {Header} from "./components/Header";
-import {Box, Button, Container, Divider, Input, Paper, Tab, Tabs, Typography} from "@mui/material";
+import {Box, Button, Container, Divider, Input, Paper, Tab, Tabs, TextField, Typography} from "@mui/material";
 import PropTypes from "prop-types";
 import PresentationService from "./service/PresentationService";
 import {AuthContext} from "./App";
@@ -17,6 +17,7 @@ function TabPanel(props) {
             id={`vertical-tabpanel-${index}`}
             aria-labelledby={`vertical-tab-${index}`}
             {...other}
+            style={{width:'100%'}}
         >
             {show && (
                 <Box sx={{p: 3}}>
@@ -46,7 +47,8 @@ function SlidesPanel({slides, slideChange}) {
                     alignItems: 'center',
                     justifyContent: 'center',
                     height: '5em',
-                    width: '8em'
+                    width: '8em',
+                    marginBottom:'1em'
                 }}>
                     MCQ
                 </Container>}/>
@@ -54,9 +56,10 @@ function SlidesPanel({slides, slideChange}) {
         </Tabs>
         {slides.map((slide, index) => {
             return <TabPanel index={index} show={selectedTab === index}>
-                <Input value={slide.question} onChange={(e) => {
+                <TextField variant="standard" sx={{width:'30%'}} value={slide.question} onChange={(e) => {
                     slideChange(index, {...slide, question: e.target.value});
                 }}/>
+
             </TabPanel>
         })}
     </>;
