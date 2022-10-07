@@ -63,7 +63,10 @@ export default function Home() {
                         <AddPresentationModal isOpen={openPresentation} setIsOpen={setOpenPresentation}/>}
                 </Container>
             }
-            <PresentationsList presentations={presentations}/>
+            {
+                presentations.length > 0 &&
+                <PresentationsList presentations={presentations}/>
+            }
         </Container>
     </>
 }
