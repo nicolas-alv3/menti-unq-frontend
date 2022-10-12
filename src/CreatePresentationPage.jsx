@@ -1,37 +1,11 @@
 import * as React from "react";
-import {useContext, useState} from "react";
+import {useState} from "react";
 import {Header} from "./components/Header";
-import {Box, Button, Container, Divider, Input, Paper, Tab, Tabs, TextField, Typography} from "@mui/material";
+import {Box, Button, Container, Divider, Input, Paper, Tab, Tabs} from "@mui/material";
 import PropTypes from "prop-types";
 import PresentationService from "./service/PresentationService";
-import {AuthContext} from "./App";
 import {useNavigate} from "react-router";
-
-function TabPanel(props) {
-    const {children, value, index, show, ...other} = props;
-
-    return (
-        <div
-            role="tabpanel"
-            hidden={!show}
-            id={`vertical-tabpanel-${index}`}
-            aria-labelledby={`vertical-tab-${index}`}
-            {...other}
-            style={{width:'100%'}}
-        >
-            {show && (
-                <Box sx={{p: 3}}>
-                    {children}
-                </Box>
-            )}
-        </div>
-    );
-}
-
-TabPanel.propTypes = {
-    children: PropTypes.node,
-    index: PropTypes.number.isRequired,
-};
+import {MCQPanel} from "./components/MCQPanel";
 
 
 function SlidesPanel({slides, slideChange}) {
@@ -41,26 +15,23 @@ function SlidesPanel({slides, slideChange}) {
               sx={{borderRight: 1, borderColor: 'black', width: '10em', padding: '1em 0', height: '90%'}}
         >
             {slides.map((_slide, i) =>
-                <Tab id={i.toString()} component={() => <Container onClick={() => setSelectedTab(i)} sx={{
+                <Tab key={i.toString()} component={() => <Container onClick={() => setSelectedTab(i)} sx={{
                     display: 'flex',
                     border: 'solid 1px',
                     alignItems: 'center',
                     justifyContent: 'center',
                     height: '5em',
                     width: '8em',
-                    marginBottom:'1em'
+                    marginBottom: '1em'
                 }}>
                     MCQ
                 </Container>}/>
             )}
         </Tabs>
         {slides.map((slide, index) => {
-            return <TabPanel index={index} show={selectedTab === index}>
-                <TextField variant="standard" sx={{width:'30%'}} value={slide.question} onChange={(e) => {
-                    slideChange(index, {...slide, question: e.target.value});
-                }}/>
-
-            </TabPanel>
+            return <MCQPanel index={index} selectedTab={selectedTab} slide={slide} onChange={(newSlide) => {
+                slideChange(index, newSlide);
+            }}/>
         })}
     </>;
 }
@@ -71,13 +42,13 @@ class MCQSlide {
 
     constructor() {
         this.question = "Pregunta de seleccion multiple";
+        this.options = [];
     }
 }
 
-export function CreatePresentationPage(props) {
+export function CreatePresentationPage() {
     const [title, setTitle] = useState('Nueva presentacion');
     const [slides, setSlides] = useState([new MCQSlide()]);
-    const {accessToken} = useContext(AuthContext);
     const navigate = useNavigate();
 
     const handleSlideChange = (index, newValue) => {
@@ -112,7 +83,7 @@ export function CreatePresentationPage(props) {
                 </Box>
                 <Button onClick={() => {
                     PresentationService.create({name: title, slides})
-                        .then((res) => navigate('/'))
+                        .then((_) => navigate('/'))
                         .catch((err) => console.log(err));
                 }}>Guardar</Button>
             </Paper>
