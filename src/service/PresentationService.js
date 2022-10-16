@@ -24,6 +24,17 @@ class PresentationService extends Service {
         }).then(data => data.json());
     }
 
+    getById(id) {
+        let url = new URL(`${this.baseUrl}/public/presentation/${id}`);
+        return fetch(url, {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: "Bearer " + this.getAccessToken(),
+            },
+        }).then(data => data.json());
+    }
+
     delete(id) {
         return fetch(`${this.baseUrl}/api/presentation/${id}`, {
             method: "DELETE",

@@ -78,7 +78,7 @@ export function CreatePresentationPage() {
                         Agregar slide
                     </Button>
                 </Box>
-                <Box sx={{height: '70vh', display: 'flex'}}>
+                <Box sx={{height: '60vh', display: 'flex'}}>
                     <SlidesPanel slideChange={handleSlideChange} slides={slides}/>
                 </Box>
                 <Button onClick={() => {
