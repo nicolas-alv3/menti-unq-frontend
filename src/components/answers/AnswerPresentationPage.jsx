@@ -1,11 +1,11 @@
 import React, {useEffect} from 'react';
-import {useParams} from "react-router";
+import {useNavigate, useParams} from "react-router";
 import PresentationService from "../../service/PresentationService";
 import {Box, Button, Radio, Typography} from "@mui/material";
 import {MCQOption} from "../MCQPanel";
 import AnswerService from "../../service/AnswerService";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import {Check} from "@mui/icons-material";
+
 
 function MCQVoteOption({id, text, selected, onClick}) {
     const styles = {
@@ -27,36 +27,60 @@ function MCQVoteOption({id, text, selected, onClick}) {
 
 function SuccessScreen() {
     return <>
-        <CheckCircleIcon color={"success"} sx={{ fontSize: 60 }}/>
+        <CheckCircleIcon color={"success"} sx={{fontSize: 90, marginBottom: ".4em"}}/>
         <Typography style={{marginBottom: "1em"}}
-            variant='h5'>Registramos tu respuesta</Typography>
+                    variant='h5'>Registramos tu respuesta</Typography>
         <Typography style={{marginBottom: "1em"}}
                     variant='body1'>Espera a que el presentador cambie de diapositiva</Typography>
-        <Typography style={{marginBottom: "2em"}}
+        <Typography style={{position: "absolute", bottom: 0}}
                     variant='body2'>¿La diapositiva no ha cambiado?<Button>Recarga la pagina</Button></Typography>
     </>;
 }
 
-export function AnswerPresentationPage() {
+export function AnswerPresentationPage(props) {
     const [presentation, setPresentation] = React.useState(null);
-    const [index, setIndex] = React.useState(0);
-    const [selected, setSelected] = React.useState(-1);
+    const [selected, setSelected] = React.useState(0);
     const [success, setSuccess] = React.useState(false);
+    const [intervalId, setIntervalId] = React.useState(undefined);
 
+    const navigate = useNavigate();
     let {id} = useParams();
 
     useEffect(() => {
         PresentationService.getById(id)
-            .then(setPresentation)
-    }, [])
+            .then((res) => {
+                if(res?.error) {
+                    navigate('/pathError');
+                } else {
+                    setPresentation(res);
+                }
+            })
+    }, []);
+
+    const startPolling = () => {
+        let timer = setInterval(function() {
+            PresentationService.getById(presentation.id)
+                .then( (pres) => {
+                    if(!pres.error && pres.currentSlide !== presentation.currentSlide) {
+                        console.log("Cambio de slide")
+                        setPresentation(pres);
+                        setSuccess(false);
+                        clearInterval(timer);
+                    }
+                })
+        }, 1000);
+    }
 
     const handleSubmit = () => {
         AnswerService.create(
             {
-                values: [presentation.slides[index].options[selected]],
-                questionId: presentation.slides[index].id
+                values: [presentation.slides[presentation.currentSlide].options[selected]],
+                questionId: presentation.slides[presentation.currentSlide].id
             }
-        ).then(() => setSuccess(true))
+        ).then(() =>  {
+            setSuccess(true);
+            startPolling();
+        })
     }
 
     return (
@@ -67,9 +91,9 @@ export function AnswerPresentationPage() {
                     :
                     <>
                         <Typography style={{marginBottom: "1em"}}
-                                    variant='h5'>{presentation?.slides[index].question}</Typography>
+                                    variant='h5'>{presentation?.slides[presentation.currentSlide].question || ''}</Typography>
                         <div>
-                            {presentation?.slides[index].options.map((o, i) => <MCQVoteOption id={i} key={o} text={o}
+                            {presentation?.slides[presentation.currentSlide].options.map((o, i) => <MCQVoteOption id={i} key={o} text={o}
                                                                                               selected={selected}
                                                                                               onClick={() => setSelected(i)}/>)}
                         </div>

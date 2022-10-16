@@ -82,7 +82,7 @@ export function CreatePresentationPage() {
                     <SlidesPanel slideChange={handleSlideChange} slides={slides}/>
                 </Box>
                 <Button onClick={() => {
-                    PresentationService.create({name: title, slides})
+                    PresentationService.create({name: title, slides, currentSlide: 0})
                         .then((_) => navigate('/'))
                         .catch((err) => console.log(err));
                 }}>Guardar</Button>

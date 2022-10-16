@@ -3,7 +3,7 @@ import Service from "./Service";
 class AnswerService extends Service {
 
     create({values, questionId}) {
-        return fetch(`${this.baseUrl}/api/presentation/`, {
+        return fetch(`${this.baseUrl}/api/answer/`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
