@@ -13,6 +13,17 @@ class PresentationService extends Service {
         }).then(data => data.json());
     }
 
+    update(presentation) {
+        return fetch(`${this.baseUrl}/api/presentation/`, {
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: "Bearer " + this.getAccessToken(),
+            },
+            body: JSON.stringify(presentation)
+        }).then(data => data.json());
+    }
+
     getPresentations() {
         let url = new URL(`${this.baseUrl}/api/presentation/individual`);
         return fetch(url, {

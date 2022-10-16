@@ -37,11 +37,10 @@ function SuccessScreen() {
     </>;
 }
 
-export function AnswerPresentationPage(props) {
+export function AnswerPresentationPage() {
     const [presentation, setPresentation] = React.useState(null);
     const [selected, setSelected] = React.useState(0);
     const [success, setSuccess] = React.useState(false);
-    const [intervalId, setIntervalId] = React.useState(undefined);
 
     const navigate = useNavigate();
     let {id} = useParams();
