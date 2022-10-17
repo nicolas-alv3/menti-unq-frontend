@@ -9,7 +9,7 @@ export default function PresentPresentationPage() {
     const [presentation, setPresentation] = React.useState(null);
     const [answers, setAnswers] = React.useState({});
 
-    let {id} = useParams();
+    const {id} = useParams();
     const navigate = useNavigate();
 
     const getAnswers = (pres) => {
