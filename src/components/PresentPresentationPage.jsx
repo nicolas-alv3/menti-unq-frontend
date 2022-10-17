@@ -16,7 +16,7 @@ export default function PresentPresentationPage() {
         AnswerService.getAnswersBySlideId(pres?.slides[pres.currentSlide].id)
             .then( res => {
                 if(res?.error) {
-                    console.log("Hubo un error fetcheando las answers")
+                    console.log("Hubo un error obteniendo las respuestas")
                 } else {
                     setAnswers(res);
                 }
