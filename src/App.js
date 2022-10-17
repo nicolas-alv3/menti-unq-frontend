@@ -12,8 +12,8 @@ function App() {
     return (<Routes>
             <Route exact path='/' element={<Home/>}/>
             <Route path='/crearPresentacion' element={<CreatePresentationPage/>}/>
-            <Route path='/:id' element={<AnswerPresentationPage/>}/>
-            <Route path='presentar/:id' element={<PresentPresentationPage/>}/>
+            <Route path='/presentacion/:id' element={<AnswerPresentationPage/>}/>
+            <Route path='/presentar/:id' element={<PresentPresentationPage/>}/>
             <Route path='/pathError' element={<PathErrorPage/>}/>
         </Routes>);
 }
