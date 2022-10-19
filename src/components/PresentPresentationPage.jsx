@@ -5,11 +5,13 @@ import {Box, Button, Divider, Typography} from "@mui/material";
 import PresentationService from "../service/PresentationService";
 import AnswerService from "../service/AnswerService";
 import InsertLinkIcon from '@mui/icons-material/InsertLink';
+import InviteToPresentationModal from "./InviteToPresentationModal";
 
 export default function PresentPresentationPage() {
     const [presentation, setPresentation] = React.useState(null);
     const [answers, setAnswers] = React.useState({});
     const [finished, setFinished] = React.useState(false);
+    const [open, setOpen] = React.useState(false);
 
 
     const {id} = useParams();
@@ -57,6 +59,7 @@ export default function PresentPresentationPage() {
     const isLastQuestion = () => {
         return presentation.currentSlide === presentation.slides.length - 1
     }
+
     const handleNextQuestion = () => {
         if (!isLastQuestion()) {
             PresentationService.update({...presentation, currentSlide: presentation.currentSlide + 1})
@@ -78,8 +81,8 @@ export default function PresentPresentationPage() {
             });
     }
 
-    const handleShare = async () => {
-        // TODO: Implementar modal como en menti con codigo y QR
+    const handleShare = () => {
+        setOpen(true)
     }
 
     return <>
@@ -106,5 +109,6 @@ export default function PresentPresentationPage() {
                         <Button onClick={handleNextQuestion}>Siguiente pregunta</Button>
                     </>}
         </Box>
+        <InviteToPresentationModal open={open} setOpen={setOpen} id={presentation?.id}/>
     </>
 }
