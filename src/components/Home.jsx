@@ -14,13 +14,16 @@ export default function Home() {
     const [presentations, setPresentations] = useState([]);
     const {isAuthenticated, error, isLoading, loginWithRedirect} = useAuth0();
     useEffect(() => {
-            PresentationService.getPresentations().then(presentations => {
-                setPresentations(presentations)
-            }).catch((e) => {
-            console.log("error", e)
-        })
+            fetchPresentations();
     }, []);
 
+    const fetchPresentations = () => {
+        PresentationService.getPresentations().then(presentations => {
+            setPresentations(presentations)
+        }).catch((e) => {
+            console.log("error", e)
+        })
+    }
     if (error) {
         return <div>Oops... {error.message}</div>;
     }
@@ -54,7 +57,7 @@ export default function Home() {
             }
             {
                 presentations.length > 0 &&
-                <PresentationsList presentations={presentations}/>
+                <PresentationsList presentations={presentations} updateList={fetchPresentations}/>
             }
         </Container>
     </>

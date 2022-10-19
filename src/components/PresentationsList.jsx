@@ -9,13 +9,16 @@ import {
     TableRow,
     Typography
 } from "@mui/material";
+import PlayArrowOutlinedIcon from '@mui/icons-material/PlayArrowOutlined';
 import {Link} from "react-router-dom";
 import DeleteIcon from '@mui/icons-material/Delete';
 import Swal from 'sweetalert2'
 import PresentationService from "../service/PresentationService";
+import {useNavigate} from "react-router";
 
 
 export function PresentationsList(props) {
+    const navigate = useNavigate();
 
     const handleDelete = (id) => () => {
         Swal.fire({
@@ -28,6 +31,7 @@ export function PresentationsList(props) {
             if (result.isConfirmed) {
                 PresentationService.delete(id)
                     .then(() => {
+                        props.updateList();
                         Swal.fire(
                             '¡Listo!',
                             'La presentación ha sido eliminada',
@@ -39,6 +43,8 @@ export function PresentationsList(props) {
     }
 
     const boxSx = {display: 'flex', justifyContent: 'space-between', padding: '1em 5em'};
+
+
     return <>
         <Paper sx={{marginTop: '1em'}}>
             <Box sx={boxSx}>
@@ -54,8 +60,8 @@ export function PresentationsList(props) {
                             <TableCell>Nombre</TableCell>
                             <TableCell align="right">Slides</TableCell>
                             <TableCell align="right">Respuestas</TableCell>
-                        <TableCell align="right"></TableCell>
-                    </TableRow>
+                            <TableCell align="right"></TableCell>
+                        </TableRow>
                     </TableHead>
                     <TableBody>
                         {props.presentations.map((row) => (
@@ -68,11 +74,14 @@ export function PresentationsList(props) {
                                 </TableCell>
                                 <TableCell align="right">{row.slides.length}</TableCell>
                                 <TableCell align="right">ZERO</TableCell>
-                            <TableCell align="right">
-                                <IconButton aria-label="delete">
-                                    <DeleteIcon onClick={ handleDelete(row.id) }/>
-                                </IconButton>
-                            </TableCell>
+                                <TableCell align="right">
+                                    <IconButton aria-label="delete">
+                                        <DeleteIcon onClick={handleDelete(row.id)}/>
+                                    </IconButton>
+                                    <IconButton aria-label="play">
+                                        <PlayArrowOutlinedIcon onClick={() => navigate("/presentar/" + row.id)}/>
+                                    </IconButton>
+                                </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
