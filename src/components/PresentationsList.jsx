@@ -31,6 +31,7 @@ export function PresentationsList(props) {
             if (result.isConfirmed) {
                 PresentationService.delete(id)
                     .then(() => {
+                        props.updateList();
                         Swal.fire(
                             '¡Listo!',
                             'La presentación ha sido eliminada',

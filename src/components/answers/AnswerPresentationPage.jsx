@@ -61,7 +61,6 @@ export function AnswerPresentationPage() {
             PresentationService.getById(presentation.id)
                 .then( (pres) => {
                     if(!pres.error && pres.currentSlide !== presentation.currentSlide) {
-                        console.log("Cambio de slide")
                         setPresentation(pres);
                         setSuccess(false);
                         clearInterval(timer);
