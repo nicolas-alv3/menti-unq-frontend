@@ -104,7 +104,7 @@ export default function PresentPresentationPage() {
                         <Typography
                             variant='h5'>{presentation?.slides[presentation?.currentSlide].question}</Typography>
                         {
-                            Object.keys(answers).map(k => <b>{`${k}: ${answers[k]} respuestas`}</b>)
+                            answers.map(({option, count}, i) => <b>{`${i+1}. ${option}: ${count} respuestas`}</b>)
                         }
                         <Button onClick={handleNextQuestion}>Siguiente pregunta</Button>
                     </>}
