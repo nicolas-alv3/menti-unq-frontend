@@ -73,7 +73,7 @@ export function AnswerPresentationPage() {
         AnswerService.create(
             {
                 values: [presentation.slides[presentation.currentSlide].options[selected]],
-                questionId: presentation.slides[presentation.currentSlide].id
+                slide: presentation.slides[presentation.currentSlide]
             }
         ).then(() =>  {
             setSuccess(true);
