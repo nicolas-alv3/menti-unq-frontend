@@ -2,14 +2,14 @@ import Service from "./Service";
 
 class AnswerService extends Service {
 
-    create({values, questionId}) {
+    create({values, slide}) {
         return fetch(`${this.baseUrl}/api/answer/`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: "Bearer " + this.getAccessToken(),
             },
-            body: JSON.stringify({values, questionId})
+            body: JSON.stringify({values, slide})
         }).then(data => data.json());
     }
 
