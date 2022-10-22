@@ -9,25 +9,13 @@ import InviteToPresentationModal from "./InviteToPresentationModal";
 
 export default function PresentPresentationPage() {
     const [presentation, setPresentation] = React.useState(null);
-    const [answers, setAnswers] = React.useState({});
+    const [answers, setAnswers] = React.useState([]);
     const [finished, setFinished] = React.useState(false);
     const [open, setOpen] = React.useState(false);
 
 
     const {id} = useParams();
     const navigate = useNavigate();
-
-    function fetchPresentation() {
-        return PresentationService.getById(id)
-            .then((res) => {
-                if (res?.error) {
-                    navigate('/pathError');
-                } else {
-                    setPresentation(res);
-                    return res;
-                }
-            })
-    }
 
     const fetchAnswers = () => {
         AnswerService.getAnswersBySlideId(presentation.slides[presentation.currentSlide].id)
@@ -51,7 +39,15 @@ export default function PresentPresentationPage() {
     }, [presentation?.currentSlide]);
 
     useEffect(() => {
-        fetchPresentation()
+        PresentationService.getById(id)
+            .then((res) => {
+                if (res?.error) {
+                    navigate('/pathError');
+                } else {
+                    setPresentation(res);
+                    return res;
+                }
+            })
     }, []);
 
     const boxSx = {display: 'flex', flexDirection: 'column', padding: '1em 5em', gap: ".7em"};
