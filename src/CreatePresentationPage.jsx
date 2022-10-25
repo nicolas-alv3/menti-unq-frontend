@@ -1,7 +1,7 @@
 import * as React from "react";
 import {useState} from "react";
 import {Header} from "./components/Header";
-import {Box, Button, Container, Divider, Input, Paper, Tab, Tabs} from "@mui/material";
+import {Box, Button, Container, Divider, Input, InputBase, Paper, Tab, Tabs} from "@mui/material";
 import PropTypes from "prop-types";
 import PresentationService from "./service/PresentationService";
 import {useNavigate} from "react-router";
@@ -69,15 +69,16 @@ export function CreatePresentationPage() {
     return <>
         <Header/>
         <Container sx={{position: 'fixed', backgroundColor: "#F0EDE0", minHeight: '100vh'}} maxWidth={false}>
-            <Paper sx={{marginTop: '1em', padding: '1em'}}>
-                <Input sx={{fontSize: '40px', ":hover": {border: 'solid 1px'}}} variant='standard' value={title}
+            <Paper sx={{marginTop: '1em', padding: '1em 0'}}>
+                <InputBase sx={{fontSize: '40px', ":hover": {border: 'solid 1px'}, marginLeft:'0.5em'}} value={title}
                        onChange={e => setTitle(e.target.value)}/>
                 <Divider/>
-                <Box sx={{marginTop: '1em'}}>
+                <Box marginLeft={1} marginY={2}>
                     <Button variant='contained' size="small" onClick={addNewSlide}>
                         Agregar slide
                     </Button>
                 </Box>
+                <Divider/>
                 <Box sx={{height: '60vh', display: 'flex'}}>
                     <SlidesPanel slideChange={handleSlideChange} slides={slides}/>
                 </Box>
