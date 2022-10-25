@@ -1,8 +1,9 @@
-import {Box, Button, Container, Divider, Paper, Radio, TextField, Typography} from "@mui/material";
+import {Box, Button, Container, Paper, Radio, TextField, Typography} from "@mui/material";
 import * as React from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {TabPanel} from "./TabPanel";
 import * as PropTypes from "prop-types";
+import {BarChart} from "./BarChart";
 
 function EditableMCQOption(props) {
     return <Box id={props.id} sx={{display: "flex", flexDirection: "row", alignItems: "center", marginBottom: "1em"}}>
@@ -50,6 +51,12 @@ function AddOptionButton(props) {
 
 AddOptionButton.propTypes = {onClick: PropTypes.func};
 
+function optionsToBarChartData(options) {
+    return options.map(i => {
+        return {label: i}
+    });
+}
+
 export function MCQPanel(props) {
 
     function updateOption(index) {
@@ -66,10 +73,7 @@ export function MCQPanel(props) {
             <Container sx={{backgroundColor: "#E7E8EB", display:"flex", alignItems:"center", width:"150%"}}>
                 <Paper sx={{height:'95%', width:'100%', borderRadius:'0', padding:'0.5em'}}>
                     <Typography mb={4} variant="h4">{props.slide.question}</Typography>
-                    {
-                        props.slide.options.map((option, index) => <MCQOption key={`mcq-option-${index}`}
-                                                                              option={option}/>)
-                    }
+                    <BarChart data={optionsToBarChartData(props.slide.options)}/>
                 </Paper>
             </Container>
             <Container>
