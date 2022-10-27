@@ -7,12 +7,14 @@ import {AnswerPresentationPage} from "./components/answers/AnswerPresentationPag
 import PathErrorPage from "./components/PathErrorPage";
 import PresentPresentationPage from "./components/PresentPresentationPage";
 import FindByCodePage from "./components/FindByCodePage";
+import {EditPresentationPage} from "./EditPresentationPage";
 
 function App() {
 
     return (<Routes>
             <Route exact path='/' element={<Home/>}/>
             <Route path='/crearPresentacion' element={<CreatePresentationPage/>}/>
+            <Route path='/editar/:id' element={<EditPresentationPage/>}/>
             <Route path='/codigo' element={<FindByCodePage/>}/>
             <Route path='/presentacion/:id' element={<AnswerPresentationPage/>}/>
             <Route path='/presentar/:id' element={<PresentPresentationPage/>}/>
