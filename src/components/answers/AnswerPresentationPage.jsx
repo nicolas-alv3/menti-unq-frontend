@@ -83,7 +83,7 @@ export function AnswerPresentationPage() {
 
     return (
         <div style={{display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center"}}>
-            <Typography style={{margin: "1em"}} variant='h3'>Menti UNQ</Typography>
+            <Typography style={{margin: "1em"}} variant='h3'>UNQui-Meter</Typography>
             {
                 success ? <SuccessScreen/>
                     :
