@@ -8,7 +8,7 @@ export function Header() {
     const {isAuthenticated} = useAuth0()
     return <AppBar component='nav' position={"static"}>
         <Toolbar sx={{backgroundColor: '#970C10', display: 'flex', justifyContent: "space-between"}}>
-            <Typography variant={'h4'}>MENTI - UNQ</Typography>
+            <Typography variant={'h4'}>UNQui-Meter</Typography>
             <Box>
                 {isAuthenticated ? <LogoutButton/> : <LoginButton/>}
             </Box>
