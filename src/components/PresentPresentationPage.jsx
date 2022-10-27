@@ -6,6 +6,7 @@ import PresentationService from "../service/PresentationService";
 import AnswerService from "../service/AnswerService";
 import InsertLinkIcon from '@mui/icons-material/InsertLink';
 import InviteToPresentationModal from "./InviteToPresentationModal";
+import {BarChart} from "./BarChart";
 
 export default function PresentPresentationPage() {
     const [presentation, setPresentation] = React.useState(null);
@@ -81,6 +82,11 @@ export default function PresentPresentationPage() {
         setOpen(true)
     }
 
+    const answersToDatapoints = () => {
+        return answers.map(({option, count}) => {
+            return {label: option, y: count}
+        })
+    };
     return <>
         <Header/>
         <Box sx={boxSx}>
@@ -97,11 +103,8 @@ export default function PresentPresentationPage() {
                     </>
                     :
                     <>
-                        <Typography
-                            variant='h5'>{presentation?.slides[presentation?.currentSlide].question}</Typography>
-                        {
-                            answers.map(({option, count}, i) => <b>{`${i+1}. ${option}: ${count} respuestas`}</b>)
-                        }
+                        <BarChart title={presentation?.slides[presentation?.currentSlide].question}
+                                  data={answersToDatapoints()}/>
                         <Button onClick={handleNextQuestion}>Siguiente pregunta</Button>
                     </>}
         </Box>
