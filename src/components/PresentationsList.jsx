@@ -12,6 +12,7 @@ import {
 import PlayArrowOutlinedIcon from '@mui/icons-material/PlayArrowOutlined';
 import {Link} from "react-router-dom";
 import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import Swal from 'sweetalert2'
 import PresentationService from "../service/PresentationService";
 import {useNavigate} from "react-router";
@@ -75,6 +76,9 @@ export function PresentationsList(props) {
                                 <TableCell align="right">{row.slides.length}</TableCell>
                                 <TableCell align="right">ZERO</TableCell>
                                 <TableCell align="right">
+                                    <IconButton aria-label="delete">
+                                        <EditIcon onClick={() => navigate(`/editar/${row.id}`)}/>
+                                    </IconButton>
                                     <IconButton aria-label="delete">
                                         <DeleteIcon onClick={handleDelete(row.id)}/>
                                     </IconButton>
