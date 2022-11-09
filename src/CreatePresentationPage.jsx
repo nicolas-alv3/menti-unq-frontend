@@ -9,7 +9,7 @@ import {MCQSlide} from "./MCQSlide";
 
 export function CreatePresentationPage() {
     const [title, setTitle] = useState('Nueva presentacion');
-    const [slides, setSlides] = useState([new MCQSlide()]);
+    const [slides, setSlides] = useState([new MCQSlide(1)]);
     const navigate = useNavigate();
 
     const createPresentation = () => {
