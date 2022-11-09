@@ -13,7 +13,7 @@ export function EditPresentationPanel({title, slides, setSlides, onSave, changeT
                 return s;
             }
         })
-        setSlides(newSlidesList);
+        setSlides(newSlidesList.filter(x => x));
     };
 
     const addNewSlide = () => {
