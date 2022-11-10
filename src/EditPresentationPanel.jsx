@@ -2,8 +2,11 @@ import {Box, Button, Divider, InputBase, Paper} from "@mui/material";
 import * as React from "react";
 import {SlidesPanel} from "./SlidesPanel";
 import {MCQSlide} from "./MCQSlide";
+import {ArrowBack} from "@mui/icons-material";
+import {useNavigate} from "react-router";
 
 export function EditPresentationPanel({title, slides, setSlides, onSave, changeTitle}) {
+    const navigate = useNavigate();
 
     const handleSlideChange = (index, newValue) => {
         const newSlidesList = slides.map((s, currentIndex) => {
@@ -21,10 +24,13 @@ export function EditPresentationPanel({title, slides, setSlides, onSave, changeT
     };
 
 
-
     return <Paper sx={{marginTop: "1em", padding: "1em 0"}}>
-        <InputBase sx={{fontSize: "40px", ":hover": {border: "solid 1px"}, marginLeft: "0.5em"}} value={title}
-                   onChange={changeTitle}/>
+        <Box sx={{display: "flex", flexDirection: "row", alignItems: 'center', paddingLeft: '1em'}}>
+            <ArrowBack fontSize="large" sx={{':hover': {cursor:'pointer', color:'#696969'}}} onClick={() => navigate(-1)}/>
+            <Divider orientation="vertical"/>
+            <InputBase sx={{fontSize: "40px", ":hover": {border: "solid 1px"}, marginLeft: "0.5em"}} value={title}
+                       onChange={changeTitle}/>
+        </Box>
         <Divider/>
         <Box marginLeft={1} marginY={2}>
             <Button variant="contained" size="small" onClick={addNewSlide}>
