@@ -58,10 +58,10 @@ export function PresentationsList(props) {
                 <Table sx={{minWidth: 450}} aria-label="simple table">
                     <TableHead>
                         <TableRow>
-                            <TableCell>Nombre</TableCell>
-                            <TableCell align="right">Slides</TableCell>
-                            <TableCell align="right">Respuestas</TableCell>
-                            <TableCell align="right"></TableCell>
+                            <TableCell align="left">Nombre</TableCell>
+                            <TableCell align="left">Slides</TableCell>
+                            <TableCell align="left">Slide actual</TableCell>
+                            <TableCell align="center"></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -73,8 +73,8 @@ export function PresentationsList(props) {
                                 <TableCell component="th" scope="row">
                                     {row.name}
                                 </TableCell>
-                                <TableCell align="right">{row.slides.length}</TableCell>
-                                <TableCell align="right">ZERO</TableCell>
+                                <TableCell align="left">{row.slides.length}</TableCell>
+                                <TableCell align="left">{`${row.currentSlide}/${row.slides.length}`}</TableCell>
                                 <TableCell align="right">
                                     <IconButton aria-label="delete">
                                         <EditIcon onClick={() => navigate(`/editar/${row.id}`)}/>
