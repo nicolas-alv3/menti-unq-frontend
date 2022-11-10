@@ -17,7 +17,7 @@ export function EditPresentationPanel({title, slides, setSlides, onSave, changeT
     };
 
     const addNewSlide = () => {
-        setSlides([...slides, new MCQSlide()]);
+        setSlides([...slides, new MCQSlide(slides.length + 1)]);
     };
 
 
