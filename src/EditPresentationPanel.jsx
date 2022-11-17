@@ -25,7 +25,25 @@ export function EditPresentationPanel({title, slides, setSlides, onSave, changeT
 
 
     let handleSlideDeletion = (slideIndex) => {
-        setSlides(slides.filter((_s,i) => i !== slideIndex).map((s,i) => {
+        setSlides(slides.filter((_s, i) => i !== slideIndex).map((s, i) => {
+            return {
+                ...s,
+                presentationOrder: i + 1
+            }
+        }))
+    };
+    let handleSortUp = (slideIndex) => {
+        slides.splice(slideIndex - 1, 0, slides.splice(slideIndex, 1)[0])
+        setSlides(slides.map((s, i) => {
+            return {
+                ...s,
+                presentationOrder: i + 1
+            }
+        }))
+    };
+    let handleSortDown = (slideIndex) => {
+        slides.splice(slideIndex + 1, 0, slides.splice(slideIndex, 1)[0])
+        setSlides(slides.map((s, i) => {
             return {
                 ...s,
                 presentationOrder: i + 1
@@ -48,7 +66,8 @@ export function EditPresentationPanel({title, slides, setSlides, onSave, changeT
         </Box>
         <Divider/>
         <Box sx={{height: "60vh", display: "flex"}}>
-            <SlidesPanel slideChange={handleSlideChange} slides={slides} deleteSlide={handleSlideDeletion}/>
+            <SlidesPanel slideChange={handleSlideChange} slides={slides} deleteSlide={handleSlideDeletion}
+                         handleSortUp={handleSortUp} handleSortDown={handleSortDown}/>
         </Box>
         <Button onClick={onSave}>Guardar</Button>
     </Paper>;

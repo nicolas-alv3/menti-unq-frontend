@@ -1,9 +1,9 @@
 import * as React from "react";
 import {useState} from "react";
-import {Box, Container, IconButton, Tab, Tabs, Typography} from "@mui/material";
+import {Box, Container, IconButton, Tab, Tabs, Typography, Button} from "@mui/material";
 import MultipleChoiceIcon from "@mui/icons-material/Leaderboard";
 import {MCQPanel} from "./components/MCQPanel";
-import {Delete} from "@mui/icons-material";
+import {Delete, KeyboardArrowUp, KeyboardArrowDown} from "@mui/icons-material";
 import * as PropTypes from "prop-types";
 
 function DeleteSlideButton(props) {
@@ -21,7 +21,7 @@ function DeleteSlideButton(props) {
 
 DeleteSlideButton.propTypes = {onClick: PropTypes.func};
 
-export function SlidesPanel({slides, slideChange, deleteSlide}) {
+export function SlidesPanel({slides, slideChange, deleteSlide, handleSortUp, handleSortDown}) {
     const [selectedTab, setSelectedTab] = useState(0);
 
     return <>
@@ -37,7 +37,12 @@ export function SlidesPanel({slides, slideChange, deleteSlide}) {
                     alignItems: "center",
                     paddingLeft: "0 !important"
                 }}>
-                    <Box  sx={{display:"flex", flexDirection:"column", justifyContent:"space-between", height: "100%"}}>
+                    <Box sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "space-between",
+                        height: "100%"
+                    }}>
                         <Typography justifySelf="flex-start" ml={0.5}>{`${slide.presentationOrder}.`}</Typography>
                         <DeleteSlideButton onClick={() =>
                             deleteSlide(i)
@@ -53,6 +58,22 @@ export function SlidesPanel({slides, slideChange, deleteSlide}) {
                     }}>
                         <MultipleChoiceIcon/>
                         <Typography variant="subtitle2">Multiple-Choice</Typography>
+                    </Box>
+                    <Box sx={{display: "flex", flexDirection: "column", marginRight: "0.5em"}}>
+                        {
+                            i !== 0 && <IconButton sx={{padding: '0'}} onClick={() => {
+                                handleSortUp(i)
+                            }}>
+                                <KeyboardArrowUp/>
+                            </IconButton>
+                        }
+                        {
+                            i !== slides.length - 1 &&
+                            <IconButton sx={{padding: '0'}} onClick={() => handleSortDown(i)}>
+                                <KeyboardArrowDown/>
+                            </IconButton>
+
+                        }
                     </Box>
 
                 </Container>}/>
