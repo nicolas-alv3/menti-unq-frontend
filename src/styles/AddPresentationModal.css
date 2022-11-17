@@ -6,7 +6,7 @@
     position: relative;
 }
 
-.slide-box svg{
+.slide-box svg {
     cursor: pointer;
     position: absolute;
     top: 8px;
@@ -14,6 +14,6 @@
     display: none;
 }
 
-.slide-box:hover svg{
+.slide-box:hover svg {
     display: block;
 }
