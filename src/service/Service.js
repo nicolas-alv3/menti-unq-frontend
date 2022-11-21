@@ -1,5 +1,9 @@
+import * as dotenv from "dotenv";
+
+dotenv.config();
+
 export default class Service {
-  baseUrl = "http://localhost:8080";
+  baseUrl = process.env.BACKEND_BASE_URL || "http://localhost:8080";
 
   getAccessToken() {
     const loginData = localStorage.getItem(
