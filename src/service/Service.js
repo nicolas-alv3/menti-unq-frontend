@@ -1,5 +1,5 @@
 export default class Service {
-  baseUrl = process.env.BACKEND_BASE_URL || "http://localhost:8080";
+  baseUrl = process.env.REACT_APP_BACKEND_BASE_URL || "http://localhost:8080";
 
   getAccessToken() {
     const loginData = localStorage.getItem(

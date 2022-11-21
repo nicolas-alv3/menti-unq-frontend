@@ -18,7 +18,9 @@
                 "**/*.react.js"
             ],
             "env": {
-                "jest": true
+                "jest": true,
+                "browser": true,
+                "node": true
             }
         }
     ],
