@@ -1,0 +1,47 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    "extends": [
+        "plugin:react/recommended",
+        "airbnb",
+        "plugin:prettier/recommended"
+    ],
+    "overrides": [
+        {
+            "files": [
+                "**/*.spec.js",
+                "**/*.test.js",
+                "**/*.spec.jsx",
+                "**/*.test.jsx",
+                "**/*.react.js"
+            ],
+            "env": {
+                "jest": true
+            }
+        }
+    ],
+    "parserOptions": {
+        "ecmaVersion": "latest",
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react"
+    ],
+    "rules": {
+        "react/prop-types": 0,
+        "react/destructuring-assignment": 1,
+        "react/require-default-props": 1,
+        "import/prefer-default-export": 0,
+        "react/react-in-jsx-scope": 0,
+        "react/jsx-curly-brace-presence": 1,
+        "no-shadow": 1,
+        "react/no-array-index-key": 1,
+        "react/jsx-props-no-spreading": 0,
+        "prefer-template": 1,
+        "class-methods-use-this": 0,
+        "no-else-return": 0,
+        "react/no-unstable-nested-components": 0
+    }
+}
