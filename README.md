@@ -1,3 +1,4 @@
+![example](https://github.com/nicolas-alv3/menti-unq-frontend/actions/workflows/ci.config.yml/badge.svg)
 # Menti-UNQ Frontend
 
 ## Para correr la app
