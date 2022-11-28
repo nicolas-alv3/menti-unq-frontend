@@ -40,7 +40,6 @@ class PresentationService extends Service {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${this.getAccessToken()}`,
       },
     }).then((data) => data.json());
   }
