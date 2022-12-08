@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
 import { Box, Button, Divider, Typography } from "@mui/material";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
+import { ArrowBack } from "@mui/icons-material";
 import { Header } from "./Header";
 import PresentationService from "../service/PresentationService";
 import AnswerService from "../service/AnswerService";
@@ -99,7 +100,22 @@ export default function PresentPresentationPage() {
       <Header />
       <Box sx={boxSx}>
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-          <Typography variant="h3">{presentation?.name}</Typography>
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <ArrowBack
+              fontSize="large"
+              sx={{
+                ":hover": {
+                  cursor: "pointer",
+                  color: "#696969",
+                },
+                marginRight: "1em",
+              }}
+              onClick={() => navigate(-1)}
+            />
+            <Typography align="left" variant="h3">
+              {presentation?.name}
+            </Typography>
+          </Box>
           <Button
             variant="contained"
             startIcon={<InsertLinkIcon />}
