@@ -5,7 +5,15 @@ export function LogoutButton() {
   const { logout } = useAuth0();
 
   return (
-    <Button onClick={logout} sx={{ color: "white" }}>
+    <Button
+      onClick={() =>
+        logout({
+          returnTo:
+            process.env.REACT_APP_LOGOUT_CALLBACK || "http://:localhost:3000/",
+        })
+      }
+      sx={{ color: "white" }}
+    >
       Logout
     </Button>
   );
