@@ -1,12 +1,42 @@
 import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
-import { Box, Button, Divider, Typography } from "@mui/material";
+import { Box, Button, Container, Divider, Typography } from "@mui/material";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
 import { Header } from "./Header";
 import PresentationService from "../service/PresentationService";
 import AnswerService from "../service/AnswerService";
 import InviteToPresentationModal from "./InviteToPresentationModal";
 import { BarChart } from "./BarChart";
+
+const answersToDatapoints = (answers) => {
+  return answers.map(({ option, count }) => {
+    return { label: option, y: count };
+  });
+};
+
+function AnswersSection({ questionBody, answers }) {
+  return answers.length === 0 ? (
+    <Container
+      sx={{
+        backgroundColor: "#efeeee",
+        borderRadius: "5px",
+      }}
+    >
+      <Typography
+        margin="auto"
+        width="75%"
+        align="center"
+        color="#868686"
+        variant="h4"
+      >
+        Las respuestas apareceran acá a medida que los invitados envien sus
+        respuestas
+      </Typography>
+    </Container>
+  ) : (
+    <BarChart title={questionBody} data={answersToDatapoints(answers)} />
+  );
+}
 
 export default function PresentPresentationPage() {
   const [presentation, setPresentation] = React.useState(null);
@@ -89,11 +119,6 @@ export default function PresentPresentationPage() {
     setOpen(true);
   };
 
-  const answersToDatapoints = () => {
-    return answers.map(({ option, count }) => {
-      return { label: option, y: count };
-    });
-  };
   return (
     <>
       <Header />
@@ -118,9 +143,11 @@ export default function PresentPresentationPage() {
           </>
         ) : (
           <>
-            <BarChart
-              title={presentation?.slides[presentation?.currentSlide].question}
-              data={answersToDatapoints()}
+            <AnswersSection
+              questionBody={
+                presentation?.slides[presentation?.currentSlide].question
+              }
+              answers={answers}
             />
             <Button onClick={handleNextQuestion}>Siguiente pregunta</Button>
           </>
