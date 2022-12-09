@@ -3,5 +3,6 @@ export class MCQSlide {
     this.question = "Pregunta de seleccion multiple";
     this.options = [];
     this.presentationOrder = i;
+    this.type = "MCQ";
   }
 }
