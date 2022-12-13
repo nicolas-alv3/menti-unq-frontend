@@ -9,14 +9,13 @@ import {
 } from "@mui/material";
 import * as React from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
-import * as PropTypes from "prop-types";
 import { TabPanel } from "./TabPanel";
 import { BarChart } from "./BarChart";
 
-function EditableMCQOption(props) {
+function EditableMCQOption({ id, onChange, onClick, value }) {
   return (
     <Box
-      id={props.id}
+      id={id}
       sx={{
         display: "flex",
         flexDirection: "row",
@@ -26,22 +25,22 @@ function EditableMCQOption(props) {
     >
       <Radio disabled checked />
       <TextField
-        value={props.value}
-        onChange={props.onChange}
+        value={value}
+        onChange={onChange}
         variant="outlined"
         sx={{ width: "40%" }}
       />
-      <Button onClick={props.onClick}>
+      <Button onClick={onClick}>
         <DeleteIcon />
       </Button>
     </Box>
   );
 }
 
-function StaticMCQOption(props) {
+function StaticMCQOption({ id, option }) {
   return (
     <Box
-      id={props.id}
+      id={id}
       sx={{
         display: "flex",
         flexDirection: "row",
@@ -51,7 +50,7 @@ function StaticMCQOption(props) {
     >
       <Radio disabled checked />
       <Typography variant="outlined" sx={{ marginRight: "1em", width: "25%" }}>
-        {props.option}
+        {option}
       </Typography>
     </Box>
   );
@@ -70,10 +69,10 @@ function MCQOption({ option, updateOption, id, removeOption, editable }) {
   );
 }
 
-function AddOptionButton(props) {
+function AddOptionButton({ onClick }) {
   return (
     <Button
-      onClick={props.onClick}
+      onClick={onClick}
       sx={{ width: "50%", marginLeft: "3em" }}
       variant="outlined"
     >
@@ -81,8 +80,6 @@ function AddOptionButton(props) {
     </Button>
   );
 }
-
-AddOptionButton.propTypes = { onClick: PropTypes.func };
 
 function optionsToBarChartData(options) {
   return options.map((i) => {
