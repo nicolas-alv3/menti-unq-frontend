@@ -36,6 +36,24 @@ function DeleteSlideButton(props) {
 
 DeleteSlideButton.propTypes = { onClick: PropTypes.func };
 
+function MCQMiniPreview() {
+  return (
+    <Box
+      sx={{
+        padding: "0.5em 0.7em",
+        border: "solid 1px",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        width: "fit-content",
+      }}
+    >
+      <MultipleChoiceIcon />
+      <Typography variant="subtitle2">Multiple-Choice</Typography>
+    </Box>
+  );
+}
+
 export function SlidesPanel({
   slides,
   slideChange,
@@ -82,19 +100,7 @@ export function SlidesPanel({
                   >{`${slide.presentationOrder}.`}</Typography>
                   <DeleteSlideButton onClick={() => deleteSlide(i)} />
                 </Box>
-                <Box
-                  sx={{
-                    padding: "0.5em 0.7em",
-                    border: "solid 1px",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    width: "fit-content",
-                  }}
-                >
-                  <MultipleChoiceIcon />
-                  <Typography variant="subtitle2">Multiple-Choice</Typography>
-                </Box>
+                <MCQMiniPreview />
                 <Box
                   sx={{
                     display: "flex",
