@@ -90,21 +90,21 @@ function optionsToBarChartData(options) {
   });
 }
 
-export function MCQPanel(props) {
-  function updateOption(index) {
+export function MCQPanel({ index, onChange, selectedTab, slide }) {
+  function updateOption(optionIndex) {
     return (newOption) => {
-      const newOptions = [...props.slide.options];
-      newOptions[index] = newOption;
+      const newOptions = [...slide.options];
+      newOptions[optionIndex] = newOption;
 
-      props.onChange({ ...props.slide, options: newOptions });
+      onChange({ ...slide, options: newOptions });
     };
   }
 
   return (
     <TabPanel
-      key={`mcq-panel-${props.index}`}
-      index={props.index}
-      show={props.selectedTab === props.index}
+      key={`mcq-panel-${index}`}
+      index={index}
+      show={selectedTab === index}
     >
       <Box
         sx={{
@@ -131,9 +131,9 @@ export function MCQPanel(props) {
             }}
           >
             <Typography mb={4} variant="h4">
-              {props.slide.question}
+              {slide.question}
             </Typography>
-            <BarChart data={optionsToBarChartData(props.slide.options)} />
+            <BarChart data={optionsToBarChartData(slide.options)} />
           </Paper>
         </Container>
         <Container>
@@ -143,35 +143,33 @@ export function MCQPanel(props) {
           <TextField
             fullWidth
             sx={{ marginBottom: "1em" }}
-            value={props.slide.question}
-            onChange={(e) =>
-              props.onChange({ ...props.slide, question: e.target.value })
-            }
+            value={slide.question}
+            onChange={(e) => onChange({ ...slide, question: e.target.value })}
           />
           <Typography marginBottom={2} variant="h5">
             Opciones:{" "}
           </Typography>
-          {props.slide.options.map((option, index) => (
+          {slide.options.map((option, optionIndex) => (
             <MCQOption
               editable
-              key={`mcq-option-${index}`}
+              key={`mcq-option-${optionIndex}`}
               option={option}
-              updateOption={updateOption(index)}
+              updateOption={updateOption(optionIndex)}
               removeOption={() => {
-                props.onChange({
-                  ...props.slide,
-                  options: props.slide.options.filter((_, i) => i !== index),
+                onChange({
+                  ...slide,
+                  options: slide.options.filter((_, i) => i !== optionIndex),
                 });
               }}
             />
           ))}
           <AddOptionButton
             onClick={() => {
-              props.onChange({
-                ...props.slide,
+              onChange({
+                ...slide,
                 options: [
-                  ...props.slide.options,
-                  `Opción ${props.slide.options.length + 1}`,
+                  ...slide.options,
+                  `Opción ${slide.options.length + 1}`,
                 ],
               });
             }}
