@@ -14,16 +14,7 @@ import { optionsToBarChartData } from "./utils";
 import { MCQOption } from "./MCQOption";
 import { AddOptionButton } from "./AddOptionButton";
 
-export function MCQPanel({ index, onChange, selectedTab, slide }) {
-  function updateOption(optionIndex) {
-    return (newOption) => {
-      const newOptions = [...slide.options];
-      newOptions[optionIndex] = newOption;
-
-      onChange({ ...slide, options: newOptions });
-    };
-  }
-
+function MCQPreviewPanel({ question, options }) {
   const paperSx = {
     height: "95%",
     width: "100%",
@@ -36,6 +27,29 @@ export function MCQPanel({ index, onChange, selectedTab, slide }) {
     alignItems: "center",
     width: "150%",
   };
+
+  return (
+    <Container sx={containerSx}>
+      <Paper sx={paperSx}>
+        <Typography mb={4} variant="h4">
+          {question}
+        </Typography>
+        <BarChart data={optionsToBarChartData(options)} />
+      </Paper>
+    </Container>
+  );
+}
+
+export function MCQPanel({ index, onChange, selectedTab, slide }) {
+  function updateOption(optionIndex) {
+    return (newOption) => {
+      const newOptions = [...slide.options];
+      newOptions[optionIndex] = newOption;
+
+      onChange({ ...slide, options: newOptions });
+    };
+  }
+
   const boxSx = {
     display: "flex",
     flexDirection: "row",
@@ -50,14 +64,7 @@ export function MCQPanel({ index, onChange, selectedTab, slide }) {
     >
       <Box sx={boxSx}>
         {/* PREVIEW */}
-        <Container sx={containerSx}>
-          <Paper sx={paperSx}>
-            <Typography mb={4} variant="h4">
-              {slide.question}
-            </Typography>
-            <BarChart data={optionsToBarChartData(slide.options)} />
-          </Paper>
-        </Container>
+        <MCQPreviewPanel question={slide.question} options={slide.options} />
         {/* TIPO DE PREGUNTA */}
         {/*  EDITAR */}
         <Container>
