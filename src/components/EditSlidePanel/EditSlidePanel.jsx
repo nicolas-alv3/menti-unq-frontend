@@ -5,6 +5,7 @@ import { TabPanel } from "../TabPanel";
 import { MCQPreviewPanel } from "./MCQPanel/MCQPreviewPanel";
 import { MCQEditionPanel } from "./MCQPanel/MCQEditionPanel";
 import { WordCloudEditionPanel } from "./WordCloudPanel/WordCloudEditionPanel";
+import { WordCloudPreviewPanel } from "./WordCloudPanel/WordCloudPreviewPanel";
 
 const slideTypes = {
   mcq: "MCQ",
@@ -40,6 +41,7 @@ export function EditSlidePanel({ index, onChange, selectedTab, slide }) {
     >
       <Box sx={boxSx}>
         {/* PREVIEW */}
+        <WordCloudPreviewPanel question={slide.question} />
         <MCQPreviewPanel question={slide.question} options={slide.options} />
         {/*  EDITAR */}
         <Container>
