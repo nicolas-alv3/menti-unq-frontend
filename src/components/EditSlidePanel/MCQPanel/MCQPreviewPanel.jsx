@@ -1,6 +1,6 @@
 import { Container, Paper, Typography } from "@mui/material";
 import * as React from "react";
-import { BarChart } from "../BarChart";
+import { BarChart } from "../../BarChart";
 import { optionsToBarChartData } from "./utils";
 
 export function MCQPreviewPanel({ question, options }) {

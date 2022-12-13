@@ -1,10 +1,10 @@
 import { Box, Container, MenuItem, Select } from "@mui/material";
 import * as React from "react";
 import { TabPanel } from "../TabPanel";
-import { MCQPreviewPanel } from "./MCQPreviewPanel";
-import { MCQEditionPanel } from "./MCQEditionPanel";
+import { MCQPreviewPanel } from "./MCQPanel/MCQPreviewPanel";
+import { MCQEditionPanel } from "./MCQPanel/MCQEditionPanel";
 
-export function MCQPanel({ index, onChange, selectedTab, slide }) {
+export function EditSlidePanel({ index, onChange, selectedTab, slide }) {
   const boxSx = {
     display: "flex",
     flexDirection: "row",

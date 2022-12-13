@@ -15,7 +15,7 @@ import {
   KeyboardArrowUp,
 } from "@mui/icons-material";
 import * as PropTypes from "prop-types";
-import { MCQPanel } from "./components/MCQPanel/MCQPanel";
+import { EditSlidePanel } from "./components/EditSlidePanel/EditSlidePanel";
 
 function DeleteSlideButton(props) {
   return (
@@ -128,7 +128,7 @@ export function SlidesPanel({
       </Tabs>
       {slides.map((slide, index) => {
         return (
-          <MCQPanel
+          <EditSlidePanel
             index={index}
             selectedTab={selectedTab}
             slide={slide}
