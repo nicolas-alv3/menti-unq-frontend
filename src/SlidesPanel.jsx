@@ -15,7 +15,7 @@ import {
   KeyboardArrowUp,
 } from "@mui/icons-material";
 import * as PropTypes from "prop-types";
-import { MCQPanel } from "./components/MCQPanel";
+import { MCQPanel } from "./components/MCQPanel/MCQPanel";
 
 function DeleteSlideButton(props) {
   return (
