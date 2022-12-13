@@ -51,6 +51,12 @@ export function EditSlidePanel({ index, onChange, selectedTab, slide }) {
   const selectSx = {
     margin: "1em 0",
   };
+
+  function handleTypeChange(e) {
+    setSlideType(e.target.value);
+    onChange({ ...slide, type: e.target.value });
+  }
+
   return (
     <TabPanel
       key={`mcq-panel-${index}`}
@@ -67,7 +73,7 @@ export function EditSlidePanel({ index, onChange, selectedTab, slide }) {
             <Select
               value={slideType}
               size="small"
-              onChange={(e) => setSlideType(e.target.value)}
+              onChange={(e) => handleTypeChange(e)}
             >
               <MenuItem value={slideTypes.mcq}>Multiple-Choice</MenuItem>
               <MenuItem value={slideTypes.wordCloud}>Nube de palabras</MenuItem>

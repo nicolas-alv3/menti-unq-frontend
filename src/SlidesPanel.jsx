@@ -132,7 +132,6 @@ export function SlidesPanel({
                   <DeleteSlideButton onClick={() => deleteSlide(i)} />
                 </Box>
                 {resolveTabPreview(slide.type)}
-                <MCQMiniPreview />
                 <Box
                   sx={{
                     display: "flex",
