@@ -13,7 +13,7 @@ export const slideTypes = {
 };
 
 export function EditSlidePanel({ index, onChange, selectedTab, slide }) {
-  const [slideType, setSlideType] = useState(slideTypes.mcq);
+  const [slideType, setSlideType] = useState(slide.type);
 
   const boxSx = {
     display: "flex",
