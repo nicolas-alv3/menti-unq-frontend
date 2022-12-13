@@ -7,7 +7,7 @@ import { MCQEditionPanel } from "./MCQPanel/MCQEditionPanel";
 import { WordCloudEditionPanel } from "./WordCloudPanel/WordCloudEditionPanel";
 import { WordCloudPreviewPanel } from "./WordCloudPanel/WordCloudPreviewPanel";
 
-const slideTypes = {
+export const slideTypes = {
   mcq: "MCQ",
   wordCloud: "WORD_CLOUD",
 };

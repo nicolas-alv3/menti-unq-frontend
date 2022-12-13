@@ -15,7 +15,10 @@ import {
   KeyboardArrowDown,
   KeyboardArrowUp,
 } from "@mui/icons-material";
-import { EditSlidePanel } from "./components/EditSlidePanel/EditSlidePanel";
+import {
+  EditSlidePanel,
+  slideTypes,
+} from "./components/EditSlidePanel/EditSlidePanel";
 
 function DeleteSlideButton(props) {
   return (
@@ -51,6 +54,7 @@ function MCQMiniPreview() {
     </Box>
   );
 }
+
 // eslint-disable-next-line no-unused-vars
 function WordMiniCloudPreview() {
   return (
@@ -68,6 +72,17 @@ function WordMiniCloudPreview() {
       <Typography variant="subtitle2">Nube de palabras</Typography>
     </Box>
   );
+}
+
+function resolveTabPreview(type) {
+  switch (type) {
+    case slideTypes.mcq:
+      return <MCQMiniPreview />;
+    case slideTypes.wordCloud:
+      return <WordMiniCloudPreview />;
+    default:
+      return <MCQMiniPreview />;
+  }
 }
 
 export function SlidesPanel({
@@ -116,6 +131,7 @@ export function SlidesPanel({
                   >{`${slide.presentationOrder}.`}</Typography>
                   <DeleteSlideButton onClick={() => deleteSlide(i)} />
                 </Box>
+                {resolveTabPreview(slide.type)}
                 <MCQMiniPreview />
                 <Box
                   sx={{
