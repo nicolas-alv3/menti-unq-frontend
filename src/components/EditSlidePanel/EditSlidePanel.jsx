@@ -33,6 +33,21 @@ export function EditSlidePanel({ index, onChange, selectedTab, slide }) {
     }
   }
 
+  function resolvePreviewPanel() {
+    switch (slideType) {
+      case slideTypes.mcq:
+        return (
+          <MCQPreviewPanel options={slide.options} question={slide.question} />
+        );
+      case slideTypes.wordCloud:
+        return <WordCloudPreviewPanel question={slide.question} />;
+      default:
+        return (
+          <MCQPreviewPanel options={slide.options} question={slide.question} />
+        );
+    }
+  }
+
   return (
     <TabPanel
       key={`mcq-panel-${index}`}
@@ -41,8 +56,7 @@ export function EditSlidePanel({ index, onChange, selectedTab, slide }) {
     >
       <Box sx={boxSx}>
         {/* PREVIEW */}
-        <WordCloudPreviewPanel question={slide.question} />
-        <MCQPreviewPanel question={slide.question} options={slide.options} />
+        {resolvePreviewPanel()}
         {/*  EDITAR */}
         <Container>
           <Select
