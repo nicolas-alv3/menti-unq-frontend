@@ -1,4 +1,4 @@
-import { Box, Container, MenuItem, Select } from "@mui/material";
+import { Box, Container, MenuItem, Select, Typography } from "@mui/material";
 import * as React from "react";
 import { useState } from "react";
 import { TabPanel } from "../TabPanel";
@@ -48,6 +48,9 @@ export function EditSlidePanel({ index, onChange, selectedTab, slide }) {
     }
   }
 
+  const selectSx = {
+    margin: "1em 0",
+  };
   return (
     <TabPanel
       key={`mcq-panel-${index}`}
@@ -59,14 +62,17 @@ export function EditSlidePanel({ index, onChange, selectedTab, slide }) {
         {resolvePreviewPanel()}
         {/*  EDITAR */}
         <Container>
-          <Select
-            value={slideType}
-            size="small"
-            onChange={(e) => setSlideType(e.target.value)}
-          >
-            <MenuItem value={slideTypes.mcq}>Multiple-Choice</MenuItem>
-            <MenuItem value={slideTypes.wordCloud}>Nube de palabras</MenuItem>
-          </Select>
+          <Box sx={selectSx}>
+            <Typography variant="h5">Variante de slide: </Typography>
+            <Select
+              value={slideType}
+              size="small"
+              onChange={(e) => setSlideType(e.target.value)}
+            >
+              <MenuItem value={slideTypes.mcq}>Multiple-Choice</MenuItem>
+              <MenuItem value={slideTypes.wordCloud}>Nube de palabras</MenuItem>
+            </Select>
+          </Box>
           {resolveEditionPanel()}
         </Container>
       </Box>
