@@ -9,13 +9,16 @@ import {
   Typography,
 } from "@mui/material";
 import MultipleChoiceIcon from "@mui/icons-material/Leaderboard";
+import CloudIcon from "@mui/icons-material/Cloud";
 import {
   Delete,
   KeyboardArrowDown,
   KeyboardArrowUp,
 } from "@mui/icons-material";
-import * as PropTypes from "prop-types";
-import { MCQPanel } from "./components/MCQPanel";
+import {
+  EditSlidePanel,
+  slideTypes,
+} from "./components/EditSlidePanel/EditSlidePanel";
 
 function DeleteSlideButton(props) {
   return (
@@ -34,7 +37,53 @@ function DeleteSlideButton(props) {
   );
 }
 
-DeleteSlideButton.propTypes = { onClick: PropTypes.func };
+function MCQMiniPreview() {
+  return (
+    <Box
+      sx={{
+        padding: "0.5em 0.7em",
+        border: "solid 1px",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        width: "fit-content",
+      }}
+    >
+      <MultipleChoiceIcon />
+      <Typography variant="subtitle2">Multiple-Choice</Typography>
+    </Box>
+  );
+}
+
+// eslint-disable-next-line no-unused-vars
+function WordMiniCloudPreview() {
+  return (
+    <Box
+      sx={{
+        padding: "0.5em 0.7em",
+        border: "solid 1px",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        width: "fit-content",
+      }}
+    >
+      <CloudIcon />
+      <Typography variant="subtitle2">Nube de palabras</Typography>
+    </Box>
+  );
+}
+
+function resolveTabPreview(type) {
+  switch (type) {
+    case slideTypes.mcq:
+      return <MCQMiniPreview />;
+    case slideTypes.wordCloud:
+      return <WordMiniCloudPreview />;
+    default:
+      return <MCQMiniPreview />;
+  }
+}
 
 export function SlidesPanel({
   slides,
@@ -82,19 +131,7 @@ export function SlidesPanel({
                   >{`${slide.presentationOrder}.`}</Typography>
                   <DeleteSlideButton onClick={() => deleteSlide(i)} />
                 </Box>
-                <Box
-                  sx={{
-                    padding: "0.5em 0.7em",
-                    border: "solid 1px",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    width: "fit-content",
-                  }}
-                >
-                  <MultipleChoiceIcon />
-                  <Typography variant="subtitle2">Multiple-Choice</Typography>
-                </Box>
+                {resolveTabPreview(slide.type)}
                 <Box
                   sx={{
                     display: "flex",
@@ -128,7 +165,7 @@ export function SlidesPanel({
       </Tabs>
       {slides.map((slide, index) => {
         return (
-          <MCQPanel
+          <EditSlidePanel
             index={index}
             selectedTab={selectedTab}
             slide={slide}
