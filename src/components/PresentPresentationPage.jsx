@@ -1,14 +1,41 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useNavigate, useParams } from "react-router";
 import { Box, Button, Divider, Typography } from "@mui/material";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
 import { ArrowBack } from "@mui/icons-material";
+import ReactWordcloud from "react-wordcloud";
 import { Header } from "./Header";
 import PresentationService from "../service/PresentationService";
 import AnswerService from "../service/AnswerService";
 import InviteToPresentationModal from "./InviteToPresentationModal";
 import { slideTypes } from "./EditSlidePanel/EditSlidePanel";
 import { MCQAnswersSection } from "./answers/MCQ/MCQAnswersSection";
+
+function WordCloudAnswersSection({ answers }) {
+  function answersToWords() {
+    return answers.map((answer) => {
+      const answerValue = Object.keys(answer)[0];
+      return { text: answerValue, value: answer[answerValue] };
+    });
+  }
+
+  const answToWod = useMemo(() => {
+    return answersToWords();
+  }, [answers]);
+
+  return (
+    <ReactWordcloud
+      options={{
+        fontSizes: [30, 80],
+        scale: "log",
+        rotations: 2,
+        rotationAngles: [0, 90],
+        padding: 1,
+      }}
+      words={answToWod}
+    />
+  );
+}
 
 export default function PresentPresentationPage() {
   const [presentation, setPresentation] = React.useState(null);
@@ -26,7 +53,11 @@ export default function PresentPresentationPage() {
       if (res?.error) {
         console.log("Hubo un error obteniendo las respuestas");
       } else {
-        setAnswers(res);
+        setAnswers((prevState) => {
+          return JSON.stringify(prevState) !== JSON.stringify(res)
+            ? res
+            : prevState;
+        });
       }
     });
   };
@@ -104,7 +135,7 @@ export default function PresentPresentationPage() {
           />
         );
       case slideTypes.wordCloud:
-        return <Typography>WORDCLOUD</Typography>;
+        return <WordCloudAnswersSection answers={answers} />;
       default:
         return (
           <Typography>No podemos manejar este tipo de slides aun!</Typography>
