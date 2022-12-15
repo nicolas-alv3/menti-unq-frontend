@@ -76,15 +76,13 @@ export function AnswerPresentationPage() {
   };
 
   const handleSubmit = () => {
-    AnswerService.create({
-      values: [
-        presentation.slides[presentation.currentSlide].options[selected],
-      ],
-      slide: presentation.slides[presentation.currentSlide],
-    }).then(() => {
-      setSuccess(true);
-      startPolling();
-    });
+    const currentSlide = presentation.slides[presentation.currentSlide];
+    AnswerService.answer(currentSlide.options[selected], currentSlide.id).then(
+      () => {
+        setSuccess(true);
+        startPolling();
+      }
+    );
   };
 
   return (
