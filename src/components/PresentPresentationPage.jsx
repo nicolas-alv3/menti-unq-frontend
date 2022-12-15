@@ -7,7 +7,7 @@ import { Header } from "./Header";
 import PresentationService from "../service/PresentationService";
 import AnswerService from "../service/AnswerService";
 import InviteToPresentationModal from "./InviteToPresentationModal";
-import { BarChart } from "./BarChart";
+import { MCQAnswersSection } from "./answers/MCQ/MCQAnswersSection";
 
 export default function PresentPresentationPage() {
   const [presentation, setPresentation] = React.useState(null);
@@ -90,13 +90,6 @@ export default function PresentPresentationPage() {
     setOpen(true);
   };
 
-  const answersToDatapoints = () => {
-    return answers.map((answer) => {
-      const label = Object.keys(answer)[0];
-      const count = answer[label];
-      return { label, y: count };
-    });
-  };
   return (
     <>
       <Header />
@@ -136,9 +129,11 @@ export default function PresentPresentationPage() {
           </>
         ) : (
           <>
-            <BarChart
-              title={presentation?.slides[presentation?.currentSlide].question}
-              data={answersToDatapoints()}
+            <MCQAnswersSection
+              answers={answers}
+              question={
+                presentation?.slides[presentation?.currentSlide].question
+              }
             />
             <Button onClick={handleNextQuestion}>Siguiente pregunta</Button>
           </>
