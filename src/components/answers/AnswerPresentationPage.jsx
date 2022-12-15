@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { Box, Button, Radio, Typography } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
@@ -19,7 +19,7 @@ function MCQVoteOption({ id, text, selected, onClick }) {
   };
   return (
     <Box onClick={onClick} id={id} sx={styles}>
-      <Radio checked={selected === id} />
+      <Radio checked={selected} />
       <Typography variant="h6">{text}</Typography>
     </Box>
   );
@@ -45,9 +45,51 @@ function SuccessScreen() {
   );
 }
 
+function MCQAnswerSection({
+  question,
+  options,
+  slideId,
+  setSuccess,
+  startPolling,
+}) {
+  const [selected, setSelected] = useState(null);
+
+  function handleSubmit() {
+    AnswerService.answer(options[selected], slideId).then(() => {
+      setSuccess(true);
+      startPolling();
+    });
+  }
+
+  return (
+    <>
+      <Typography style={{ marginBottom: "1em" }} variant="h5">
+        {question || ""}
+      </Typography>
+      <div>
+        {options.map((o, i) => (
+          <MCQVoteOption
+            id={i}
+            key={o}
+            text={o}
+            selected={selected === i}
+            onClick={() => setSelected(i)}
+          />
+        ))}
+      </div>
+      <Button
+        variant="contained"
+        sx={{ width: "24em" }}
+        onClick={() => handleSubmit()}
+      >
+        Enviar
+      </Button>
+    </>
+  );
+}
+
 export function AnswerPresentationPage() {
   const [presentation, setPresentation] = React.useState(null);
-  const [selected, setSelected] = React.useState(0);
   const [success, setSuccess] = React.useState(false);
 
   const navigate = useNavigate();
@@ -74,17 +116,9 @@ export function AnswerPresentationPage() {
       });
     }, 1000);
   };
-
-  const handleSubmit = () => {
-    const currentSlide = presentation.slides[presentation.currentSlide];
-    AnswerService.answer(currentSlide.options[selected], currentSlide.id).then(
-      () => {
-        setSuccess(true);
-        startPolling();
-      }
-    );
+  const currentSlide = presentation?.slides[presentation?.currentSlide] ?? {
+    options: [],
   };
-
   return (
     <div
       style={{
@@ -100,31 +134,13 @@ export function AnswerPresentationPage() {
       {success ? (
         <SuccessScreen />
       ) : (
-        <>
-          <Typography style={{ marginBottom: "1em" }} variant="h5">
-            {presentation?.slides[presentation.currentSlide].question || ""}
-          </Typography>
-          <div>
-            {presentation?.slides[presentation.currentSlide].options.map(
-              (o, i) => (
-                <MCQVoteOption
-                  id={i}
-                  key={o}
-                  text={o}
-                  selected={selected}
-                  onClick={() => setSelected(i)}
-                />
-              )
-            )}
-          </div>
-          <Button
-            variant="contained"
-            sx={{ width: "24em" }}
-            onClick={handleSubmit}
-          >
-            Enviar
-          </Button>
-        </>
+        <MCQAnswerSection
+          startPolling={startPolling}
+          setSuccess={setSuccess}
+          options={currentSlide.options}
+          question={currentSlide.question}
+          slideId={currentSlide.id}
+        />
       )}
     </div>
   );
