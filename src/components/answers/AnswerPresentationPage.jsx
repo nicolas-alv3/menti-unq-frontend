@@ -4,6 +4,7 @@ import { Button, Typography } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import PresentationService from "../../service/PresentationService";
 import { MCQAnswerSection } from "./MCQ/MCQAnswerSection";
+import { slideTypes } from "../EditSlidePanel/EditSlidePanel";
 
 function SuccessScreen() {
   return (
@@ -56,6 +57,26 @@ export function AnswerPresentationPage() {
   const currentSlide = presentation?.slides[presentation?.currentSlide] ?? {
     options: [],
   };
+
+  function resolveAnswerSection() {
+    switch (currentSlide.type) {
+      case slideTypes.mcq:
+        return (
+          <MCQAnswerSection
+            startPolling={startPolling}
+            setSuccess={setSuccess}
+            options={currentSlide.options}
+            question={currentSlide.question}
+            slideId={currentSlide.id}
+          />
+        );
+      case slideTypes.wordCloud:
+        return <Typography>HOLIS</Typography>;
+      default:
+        return <Typography>No se encuentra tipo de slide</Typography>;
+    }
+  }
+
   return (
     <div
       style={{
@@ -68,17 +89,7 @@ export function AnswerPresentationPage() {
       <Typography style={{ margin: "1em" }} variant="h3">
         UNQui-Meter
       </Typography>
-      {success ? (
-        <SuccessScreen />
-      ) : (
-        <MCQAnswerSection
-          startPolling={startPolling}
-          setSuccess={setSuccess}
-          options={currentSlide.options}
-          question={currentSlide.question}
-          slideId={currentSlide.id}
-        />
-      )}
+      {success ? <SuccessScreen /> : resolveAnswerSection()}
     </div>
   );
 }
