@@ -1,43 +1,15 @@
 import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
-import { Box, Button, Container, Divider, Typography } from "@mui/material";
+import { Box, Button, Divider, Typography } from "@mui/material";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
 import { ArrowBack } from "@mui/icons-material";
 import { Header } from "./Header";
 import PresentationService from "../service/PresentationService";
 import AnswerService from "../service/AnswerService";
 import InviteToPresentationModal from "./InviteToPresentationModal";
-import { BarChart } from "./BarChart";
-
-const answersToDatapoints = (answers) => {
-  return answers.map(({ option, count }) => {
-    return { label: option, y: count };
-  });
-};
-
-function AnswersSection({ questionBody, answers }) {
-  return answers.length === 0 ? (
-    <Container
-      sx={{
-        backgroundColor: "#efeeee",
-        borderRadius: "5px",
-      }}
-    >
-      <Typography
-        margin="auto"
-        width="75%"
-        align="center"
-        color="#868686"
-        variant="h4"
-      >
-        Las respuestas apareceran acá a medida que los invitados envien sus
-        respuestas
-      </Typography>
-    </Container>
-  ) : (
-    <BarChart title={questionBody} data={answersToDatapoints(answers)} />
-  );
-}
+import { slideTypes } from "./EditSlidePanel/EditSlidePanel";
+import { MCQAnswersSection } from "./answers/MCQ/MCQAnswersSection";
+import { WordCloudAnswersSection } from "./answers/word-cloud/WordCloudAnswersSection";
 
 export default function PresentPresentationPage() {
   const [presentation, setPresentation] = React.useState(null);
@@ -55,7 +27,11 @@ export default function PresentPresentationPage() {
       if (res?.error) {
         console.log("Hubo un error obteniendo las respuestas");
       } else {
-        setAnswers(res);
+        setAnswers((prevState) => {
+          return JSON.stringify(prevState) !== JSON.stringify(res)
+            ? res
+            : prevState;
+        });
       }
     });
   };
@@ -119,6 +95,27 @@ export default function PresentPresentationPage() {
   const handleShare = () => {
     setOpen(true);
   };
+  const currentSlide = presentation?.slides[presentation?.currentSlide] ?? {
+    type: null,
+  };
+
+  function resolveShowAnswersSection() {
+    switch (currentSlide.type) {
+      case slideTypes.mcq:
+        return (
+          <MCQAnswersSection
+            answers={answers}
+            question={currentSlide?.question}
+          />
+        );
+      case slideTypes.wordCloud:
+        return <WordCloudAnswersSection answers={answers} />;
+      default:
+        return (
+          <Typography>No podemos manejar este tipo de slides aun!</Typography>
+        );
+    }
+  }
 
   return (
     <>
@@ -159,12 +156,7 @@ export default function PresentPresentationPage() {
           </>
         ) : (
           <>
-            <AnswersSection
-              questionBody={
-                presentation?.slides[presentation?.currentSlide].question
-              }
-              answers={answers}
-            />
+            {resolveShowAnswersSection()}
             <Button onClick={handleNextQuestion}>Siguiente pregunta</Button>
           </>
         )}

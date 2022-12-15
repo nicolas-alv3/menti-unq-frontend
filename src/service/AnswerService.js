@@ -20,6 +20,16 @@ class AnswerService extends Service {
       },
     }).then((data) => data.json());
   }
+
+  answer(value, slideId) {
+    return fetch(`${this.baseUrl}/public/answer/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ value, slideId }),
+    }).then((data) => data.json());
+  }
 }
 
 export default new AnswerService();

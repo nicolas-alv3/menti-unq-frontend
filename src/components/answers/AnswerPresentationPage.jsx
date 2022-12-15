@@ -1,29 +1,11 @@
 import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
-import { Box, Button, Radio, Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import PresentationService from "../../service/PresentationService";
-import AnswerService from "../../service/AnswerService";
-
-function MCQVoteOption({ id, text, selected, onClick }) {
-  const styles = {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: "1em",
-    border: "1px solid lightgray",
-    borderRadius: 2,
-    padding: "6px",
-    width: "20em",
-    cursor: "pointer",
-  };
-  return (
-    <Box onClick={onClick} id={id} sx={styles}>
-      <Radio checked={selected === id} />
-      <Typography variant="h6">{text}</Typography>
-    </Box>
-  );
-}
+import { slideTypes } from "../EditSlidePanel/EditSlidePanel";
+import { MCQSendAnswerSection } from "./MCQ/MCQSendAnswerSection";
+import { WordCloudSendAnswerSection } from "./word-cloud/WordCloudSendAnswerSection";
 
 function SuccessScreen() {
   return (
@@ -47,7 +29,6 @@ function SuccessScreen() {
 
 export function AnswerPresentationPage() {
   const [presentation, setPresentation] = React.useState(null);
-  const [selected, setSelected] = React.useState(0);
   const [success, setSuccess] = React.useState(false);
 
   const navigate = useNavigate();
@@ -74,18 +55,35 @@ export function AnswerPresentationPage() {
       });
     }, 1000);
   };
-
-  const handleSubmit = () => {
-    AnswerService.create({
-      values: [
-        presentation.slides[presentation.currentSlide].options[selected],
-      ],
-      slide: presentation.slides[presentation.currentSlide],
-    }).then(() => {
-      setSuccess(true);
-      startPolling();
-    });
+  const currentSlide = presentation?.slides[presentation?.currentSlide] ?? {
+    options: [],
   };
+
+  function resolveAnswerSection() {
+    switch (currentSlide.type) {
+      case slideTypes.mcq:
+        return (
+          <MCQSendAnswerSection
+            startPolling={startPolling}
+            setSuccess={setSuccess}
+            options={currentSlide.options}
+            question={currentSlide.question}
+            slideId={currentSlide.id}
+          />
+        );
+      case slideTypes.wordCloud:
+        return (
+          <WordCloudSendAnswerSection
+            question={currentSlide.question}
+            slideId={currentSlide.id}
+            setSuccess={setSuccess}
+            startPolling={startPolling}
+          />
+        );
+      default:
+        return <Typography>No se encuentra tipo de slide</Typography>;
+    }
+  }
 
   return (
     <div
@@ -99,35 +97,7 @@ export function AnswerPresentationPage() {
       <Typography style={{ margin: "1em" }} variant="h3">
         UNQui-Meter
       </Typography>
-      {success ? (
-        <SuccessScreen />
-      ) : (
-        <>
-          <Typography style={{ marginBottom: "1em" }} variant="h5">
-            {presentation?.slides[presentation.currentSlide].question || ""}
-          </Typography>
-          <div>
-            {presentation?.slides[presentation.currentSlide].options.map(
-              (o, i) => (
-                <MCQVoteOption
-                  id={i}
-                  key={o}
-                  text={o}
-                  selected={selected}
-                  onClick={() => setSelected(i)}
-                />
-              )
-            )}
-          </div>
-          <Button
-            variant="contained"
-            sx={{ width: "24em" }}
-            onClick={handleSubmit}
-          >
-            Enviar
-          </Button>
-        </>
-      )}
+      {success ? <SuccessScreen /> : resolveAnswerSection()}
     </div>
   );
 }
