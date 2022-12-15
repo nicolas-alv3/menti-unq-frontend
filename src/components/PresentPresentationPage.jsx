@@ -7,6 +7,7 @@ import { Header } from "./Header";
 import PresentationService from "../service/PresentationService";
 import AnswerService from "../service/AnswerService";
 import InviteToPresentationModal from "./InviteToPresentationModal";
+import { slideTypes } from "./EditSlidePanel/EditSlidePanel";
 import { MCQAnswersSection } from "./answers/MCQ/MCQAnswersSection";
 
 export default function PresentPresentationPage() {
@@ -89,6 +90,27 @@ export default function PresentPresentationPage() {
   const handleShare = () => {
     setOpen(true);
   };
+  const currentSlide = presentation?.slides[presentation?.currentSlide] ?? {
+    type: null,
+  };
+
+  function resolveShowAnswersSection() {
+    switch (currentSlide.type) {
+      case slideTypes.mcq:
+        return (
+          <MCQAnswersSection
+            answers={answers}
+            question={currentSlide?.question}
+          />
+        );
+      case slideTypes.wordCloud:
+        return <Typography>WORDCLOUD</Typography>;
+      default:
+        return (
+          <Typography>No podemos manejar este tipo de slides aun!</Typography>
+        );
+    }
+  }
 
   return (
     <>
@@ -129,12 +151,7 @@ export default function PresentPresentationPage() {
           </>
         ) : (
           <>
-            <MCQAnswersSection
-              answers={answers}
-              question={
-                presentation?.slides[presentation?.currentSlide].question
-              }
-            />
+            {resolveShowAnswersSection()}
             <Button onClick={handleNextQuestion}>Siguiente pregunta</Button>
           </>
         )}
