@@ -91,7 +91,6 @@ export default function PresentPresentationPage() {
   };
 
   const answersToDatapoints = () => {
-    // {"laopcion": count}
     return answers.map((answer) => {
       const label = Object.keys(answer)[0];
       const count = answer[label];

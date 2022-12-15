@@ -3,9 +3,9 @@ import { useNavigate, useParams } from "react-router";
 import { Button, Typography } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import PresentationService from "../../service/PresentationService";
-import { MCQAnswerSection } from "./MCQ/MCQAnswerSection";
 import { slideTypes } from "../EditSlidePanel/EditSlidePanel";
-import { WordCloudAnswersSection } from "./word-cloud/WordCloudAnswersSection";
+import { MCQSendAnswerSection } from "./MCQ/MCQSendAnswerSection";
+import { WordCloudSendAnswerSection } from "./word-cloud/WordCloudSendAnswerSection";
 
 function SuccessScreen() {
   return (
@@ -63,7 +63,7 @@ export function AnswerPresentationPage() {
     switch (currentSlide.type) {
       case slideTypes.mcq:
         return (
-          <MCQAnswerSection
+          <MCQSendAnswerSection
             startPolling={startPolling}
             setSuccess={setSuccess}
             options={currentSlide.options}
@@ -73,7 +73,7 @@ export function AnswerPresentationPage() {
         );
       case slideTypes.wordCloud:
         return (
-          <WordCloudAnswersSection
+          <WordCloudSendAnswerSection
             question={currentSlide.question}
             slideId={currentSlide.id}
             setSuccess={setSuccess}

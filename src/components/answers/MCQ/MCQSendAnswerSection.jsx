@@ -1,17 +1,19 @@
 import React, { useState } from "react";
-import { Button, TextField, Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import AnswerService from "../../../service/AnswerService";
+import { MCQVoteOption } from "./MCQVoteOption";
 
-export function WordCloudAnswersSection({
+export function MCQSendAnswerSection({
   question,
+  options,
   slideId,
   setSuccess,
   startPolling,
 }) {
-  const [text, setText] = useState("");
+  const [selected, setSelected] = useState(null);
 
   function handleSubmit() {
-    AnswerService.answer(text, slideId).then(() => {
+    AnswerService.answer(options[selected], slideId).then(() => {
       setSuccess(true);
       startPolling();
     });
@@ -23,12 +25,15 @@ export function WordCloudAnswersSection({
         {question || ""}
       </Typography>
       <div>
-        <TextField
-          placeholder="Escribí aca tu respuesta"
-          sx={{ width: "40vw", marginBottom: "2em" }}
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-        />
+        {options.map((o, i) => (
+          <MCQVoteOption
+            id={i}
+            key={o}
+            text={o}
+            selected={selected === i}
+            onClick={() => setSelected(i)}
+          />
+        ))}
       </div>
       <Button
         variant="contained"
