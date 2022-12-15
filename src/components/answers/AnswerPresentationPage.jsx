@@ -1,29 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
-import { Box, Button, Radio, Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import PresentationService from "../../service/PresentationService";
-import AnswerService from "../../service/AnswerService";
-
-function MCQVoteOption({ id, text, selected, onClick }) {
-  const styles = {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: "1em",
-    border: "1px solid lightgray",
-    borderRadius: 2,
-    padding: "6px",
-    width: "20em",
-    cursor: "pointer",
-  };
-  return (
-    <Box onClick={onClick} id={id} sx={styles}>
-      <Radio checked={selected} />
-      <Typography variant="h6">{text}</Typography>
-    </Box>
-  );
-}
+import { MCQAnswerSection } from "./MCQ/MCQAnswerSection";
 
 function SuccessScreen() {
   return (
@@ -41,49 +21,6 @@ function SuccessScreen() {
       <Typography style={{ position: "absolute", bottom: 0 }} variant="body2">
         ¿La diapositiva no ha cambiado?<Button>Recarga la pagina</Button>
       </Typography>
-    </>
-  );
-}
-
-function MCQAnswerSection({
-  question,
-  options,
-  slideId,
-  setSuccess,
-  startPolling,
-}) {
-  const [selected, setSelected] = useState(null);
-
-  function handleSubmit() {
-    AnswerService.answer(options[selected], slideId).then(() => {
-      setSuccess(true);
-      startPolling();
-    });
-  }
-
-  return (
-    <>
-      <Typography style={{ marginBottom: "1em" }} variant="h5">
-        {question || ""}
-      </Typography>
-      <div>
-        {options.map((o, i) => (
-          <MCQVoteOption
-            id={i}
-            key={o}
-            text={o}
-            selected={selected === i}
-            onClick={() => setSelected(i)}
-          />
-        ))}
-      </div>
-      <Button
-        variant="contained"
-        sx={{ width: "24em" }}
-        onClick={() => handleSubmit()}
-      >
-        Enviar
-      </Button>
     </>
   );
 }
